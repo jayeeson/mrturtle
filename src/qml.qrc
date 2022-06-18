@@ -2,7 +2,7 @@
 <RCC version="1.0">
 
 <qresource prefix="/">
-    <file>main.qml</file>
+    <file alias="main.qml">main.qml</file>
 </qresource>
 
 </RCC>
