@@ -1,8 +1,0 @@
-using xserver:
-set DISPLAY to `DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0` to set display to windows, then run program.
-
-can do this from w with vbscript:
-`args = "-c" & " -l " & """DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0 helloworld"""
-WScript.CreateObject("Shell.Application").ShellExecute "bash", args, "", "open", 0`
-
-replace terminator with file

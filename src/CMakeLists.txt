@@ -1,16 +1,10 @@
-set(HEADERS)
-set(HEADER_DIRECTORIES src/include)
-set(SRC main.cpp
-    qml/qml.qrc
-)
+set(HEADER_DIRECTORIES Commands)
+file(GLOB SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp  ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
-add_executable(helloworld
-    ${SRC}
-    ${HEADERS}
-)
+add_library(src_lib ${SRC})
 
-target_include_directories(helloworld PRIVATE ${HEADER_DIRECTORIES})
-target_link_libraries(helloworld Qt5::Core Qt5::Widgets Qt5::Quick Qt5::Qml)
+include_directories(${HEADER_DIRECTORIES})
+target_link_libraries(src_lib Qt5::Core Qt5::Widgets Qt5::Quick Qt5::Qml)
 set_target_properties(Qt5::Quick PROPERTIES MAP_IMPORTED_CONFIG_COVERAGE "RELEASE")
 set_target_properties(Qt5::Core PROPERTIES MAP_IMPORTED_CONFIG_COVERAGE "RELEASE")
 

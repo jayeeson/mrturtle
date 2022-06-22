@@ -24,3 +24,7 @@ find_package(GTest)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 add_subdirectory(src)
+
+add_executable(helloworld main.cpp)
+target_link_libraries(helloworld PUBLIC src_lib)
+target_include_directories(helloworld PUBLIC "${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/src/Commands")

@@ -1,8 +1,16 @@
 #include <gtest/gtest.h>
+#include "Turtle.h"
+#include "iostream"
 
-TEST(sample_test_case, sample_test)
+TEST(TurtleTest, turtleMovesForward)
 {
-  EXPECT_EQ(1, 1);
+  Size<int> s(420, 69);
+  Turtle turtle(s);
+  int forwardAmount = 5;
+  turtle.Forward(forwardAmount);
+  auto position = turtle.GetPosition();
+  EXPECT_EQ(position.x, s.width() / 2);
+  EXPECT_EQ(position.y, s.height() / 2 + forwardAmount);
 }
 
 int main(int argc, char **argv)

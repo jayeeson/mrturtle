@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QtQuick>
+#include "CommandInterpreter.h"
+#include "Turtle.h"
 
 int main(int argc, char *argv[])
 {
