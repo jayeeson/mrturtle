@@ -11,11 +11,13 @@ public:
 
   void Forward(double distance, bool backward = false);
   void Backward(double distance);
-  void Rotate(double angle); // rads
+  void RotateRad(double angle);
+  void RotateDeg(double angle);
 
   void PenDown(bool down);
 
   inline Point GetPosition();
+  inline double GetHeading();
 
 private:
   double _heading; // value in radians
@@ -29,4 +31,9 @@ private:
 inline Point Turtle::GetPosition()
 {
   return _position;
+}
+
+inline double Turtle::GetHeading()
+{
+  return _heading;
 }

@@ -26,6 +26,10 @@ qtquick_compiler_add_resources(RESOURCES src/qml/qml.qrc)
 find_package(GTest)
 include_directories(${GTEST_INCLUDE_DIRS})
 
+enable_testing()
+
 
 add_subdirectory(src)
 add_subdirectory(test)
+
+add_test(NAME TEST_SUITE COMMAND tests )
