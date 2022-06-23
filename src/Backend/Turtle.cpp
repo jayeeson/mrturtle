@@ -5,11 +5,12 @@
 
 Turtle::Turtle(Size<int> &canvasSize)
     : _heading(M_PI / 2.),
-      _position(canvasSize.width() / 2., canvasSize.height() / 2.),
+      _position(0, 0),
       _penDown(true),
       _penColor(PenColor::black),
       _penSize(3),
-      _canvasSize(canvasSize)
+      _canvasSize(canvasSize),
+      _visible(true)
 {
 }
 
@@ -28,14 +29,7 @@ void Turtle::Backward(double distance)
 void Turtle::RotateRad(double angle)
 {
   _heading += angle;
-  if (_heading < 0)
-  {
-    _heading = 2 * M_PI + _heading;
-  }
-  if (_heading >= 2 * M_PI)
-  {
-    _heading = fmod(_heading, 2 * M_PI);
-  }
+  _heading = ClampAngleToUnitCircle(_heading);
 }
 
 void Turtle::RotateDeg(double angle)
@@ -43,7 +37,21 @@ void Turtle::RotateDeg(double angle)
   RotateRad(angle * M_PI / 180);
 }
 
-void Turtle::PenDown(bool down)
+void Turtle::SetHeading(double angle)
 {
-  _penDown = down;
+  double newHeading = angle;
+  _heading = ClampAngleToUnitCircle(newHeading);
+}
+
+double Turtle::ClampAngleToUnitCircle(double angle)
+{
+  if (abs(angle) >= 2 * M_PI)
+  {
+    angle = fmod(angle, 2 * M_PI);
+  }
+  if (angle < 0)
+  {
+    angle = 2 * M_PI + angle;
+  }
+  return angle;
 }

@@ -8,6 +8,13 @@ public:
   {
   }
 
+  inline bool operator==(const Point &rhs) const;
+
   double x;
   double y;
 };
+
+inline bool Point::operator==(const Point &rhs) const
+{
+  return x == rhs.x && y == rhs.y;
+}
