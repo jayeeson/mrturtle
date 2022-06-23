@@ -2,19 +2,7 @@
 #include "Turtle.h"
 #include <cmath>
 
-template <class T, class U>
-static bool AreEqual(T num1, U num2, double delta = 1E-8)
-{
-  if (num1 < num2)
-  {
-    return num2 - num1 < delta;
-  }
-  if (num1 > num2)
-  {
-    return num1 - num2 < delta;
-  }
-  return true;
-}
+static double PRECISION = 1E-8;
 
 TEST(TurtleTest, turtleMovesOrthogonally)
 {
@@ -23,40 +11,46 @@ TEST(TurtleTest, turtleMovesOrthogonally)
   int forwardAmount = 5;
 
   turtle.Forward(forwardAmount);
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().x, s.width() / 2.));
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().y, s.height() / 2. + forwardAmount));
+  EXPECT_NEAR(turtle.GetPosition().x, s.width() / 2., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y, s.height() / 2. + forwardAmount, PRECISION);
   turtle.Backward(forwardAmount);
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().x, s.width() / 2.));
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().y, s.height() / 2.));
+  EXPECT_NEAR(turtle.GetPosition().x, s.width() / 2., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y, s.height() / 2., PRECISION);
 
   turtle.Forward(s.height() + forwardAmount);
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().y, s.height() / 2. + forwardAmount));
+  EXPECT_NEAR(turtle.GetPosition().y, s.height() / 2. + forwardAmount, PRECISION);
   turtle.Backward(2 * s.height() + forwardAmount);
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().y, s.height() / 2.));
+  EXPECT_NEAR(turtle.GetPosition().y, s.height() / 2., PRECISION);
 
   turtle.RotateDeg(-90);
-  EXPECT_TRUE(AreEqual(turtle.GetHeading(), 0));
+  EXPECT_NEAR(turtle.GetHeading(), 0, PRECISION);
 
   turtle.Forward(forwardAmount);
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().x, s.width() / 2. + forwardAmount));
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().y, s.height() / 2.));
+  EXPECT_NEAR(turtle.GetPosition().x, s.width() / 2. + forwardAmount, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y, s.height() / 2., PRECISION);
   turtle.Backward(forwardAmount);
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().x, s.width() / 2.));
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().y, s.height() / 2.));
+  EXPECT_NEAR(turtle.GetPosition().x, s.width() / 2., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y, s.height() / 2., PRECISION);
 
   turtle.Forward(s.width() + forwardAmount);
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().x, s.width() / 2. + forwardAmount));
+  EXPECT_NEAR(turtle.GetPosition().x, s.width() / 2. + forwardAmount, PRECISION);
   turtle.Backward(s.width() + forwardAmount);
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().x, s.width() / 2.));
-  EXPECT_TRUE(AreEqual(turtle.GetPosition().y, s.height() / 2.));
+  EXPECT_NEAR(turtle.GetPosition().x, s.width() / 2., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y, s.height() / 2., PRECISION);
 }
 
 TEST(TurtleTest, turtleMovesDiagonally)
 {
   Size<int> s(100, 100);
   Turtle turtle(s);
+  int forwardDistance = 5;
 
   turtle.RotateDeg(-45);
+  EXPECT_NEAR(turtle.GetHeading(), M_PI / 4, PRECISION);
+
+  turtle.Forward(forwardDistance);
+  EXPECT_NEAR(turtle.GetPosition().x, s.width() / 2 + sqrt(2) / 2 * forwardDistance, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y, s.height() / 2 + sqrt(2) / 2 * forwardDistance, PRECISION);
 }
 
 TEST(TurtleTest, turtleRotatesRad)
@@ -65,16 +59,16 @@ TEST(TurtleTest, turtleRotatesRad)
   Turtle turtle(s);
 
   turtle.RotateRad(M_PI / 2);
-  EXPECT_TRUE(AreEqual(turtle.GetHeading(), M_PI));
+  EXPECT_NEAR(turtle.GetHeading(), M_PI, PRECISION);
 
   turtle.RotateRad(2 * M_PI);
-  EXPECT_TRUE(AreEqual(turtle.GetHeading(), M_PI));
+  EXPECT_NEAR(turtle.GetHeading(), M_PI, PRECISION);
 
   turtle.RotateRad(-M_PI / 2);
-  EXPECT_TRUE(AreEqual(turtle.GetHeading(), M_PI / 2));
+  EXPECT_NEAR(turtle.GetHeading(), M_PI / 2, PRECISION);
 
   turtle.RotateRad(-2 * M_PI);
-  EXPECT_TRUE(AreEqual(turtle.GetHeading(), M_PI / 2));
+  EXPECT_NEAR(turtle.GetHeading(), M_PI / 2, PRECISION);
 }
 
 TEST(TurtleTest, turtleRotatesDeg)
@@ -83,16 +77,16 @@ TEST(TurtleTest, turtleRotatesDeg)
   Turtle turtle(s);
 
   turtle.RotateDeg(90);
-  EXPECT_TRUE(AreEqual(turtle.GetHeading(), M_PI));
+  EXPECT_NEAR(turtle.GetHeading(), M_PI, PRECISION);
 
   turtle.RotateDeg(360);
-  EXPECT_TRUE(AreEqual(turtle.GetHeading(), M_PI));
+  EXPECT_NEAR(turtle.GetHeading(), M_PI, PRECISION);
 
   turtle.RotateDeg(-90);
-  EXPECT_TRUE(AreEqual(turtle.GetHeading(), M_PI / 2));
+  EXPECT_NEAR(turtle.GetHeading(), M_PI / 2, PRECISION);
 
   turtle.RotateDeg(-360);
-  EXPECT_TRUE(AreEqual(turtle.GetHeading(), M_PI / 2));
+  EXPECT_NEAR(turtle.GetHeading(), M_PI / 2, PRECISION);
 }
 
 int main(int argc, char **argv)
