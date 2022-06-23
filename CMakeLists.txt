@@ -12,6 +12,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -23,8 +26,6 @@ qtquick_compiler_add_resources(RESOURCES src/qml/qml.qrc)
 find_package(GTest)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-add_subdirectory(src)
 
-add_executable(helloworld main.cpp)
-target_link_libraries(helloworld PUBLIC src_lib)
-target_include_directories(helloworld PUBLIC "${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/src/Commands")
+add_subdirectory(src)
+add_subdirectory(test)
