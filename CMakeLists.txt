@@ -20,7 +20,7 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt5 COMPONENTS Core Widgets Qml Quick REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick QuickControls2 REQUIRED)
 find_package(Qt5QuickCompiler)
 qtquick_compiler_add_resources(RESOURCES src/View/qml/qml.qrc)
 find_package(GTest)

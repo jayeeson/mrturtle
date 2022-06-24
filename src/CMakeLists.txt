@@ -1,6 +1,6 @@
 add_executable(mrturtle main.cpp View/qml/qml.qrc)
 target_link_libraries(mrturtle PUBLIC types model view
-  Qt5::Core Qt5::Widgets Qt5::Quick Qt5::Qml)
+  Qt5::Core Qt5::Quick Qt5::QuickControls2)
 target_include_directories(mrturtle PUBLIC "${PROJECT_BINARY_DIR}"
   "${PROJECT_SOURCE_DIR}/src"
   "${PROJECT_SOURCE_DIR}/src/Model"

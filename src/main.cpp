@@ -1,4 +1,4 @@
-#include <QApplication>
+#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtQuick>
 #include "CommandInterpreter.h"
@@ -6,9 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-  QApplication app(argc, argv);
-  QQuickView view;
-  view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
-  view.show();
+  QGuiApplication app(argc, argv);
+  QQmlApplicationEngine engine("qrc:/main.qml");
   return app.exec();
 }
