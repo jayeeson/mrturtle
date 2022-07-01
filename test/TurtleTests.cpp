@@ -11,32 +11,32 @@ TEST(TurtleTest, turtleMovesOrthogonally)
   int forwardAmount = 5;
 
   turtle.Forward(forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x, 0., PRECISION);
-  EXPECT_NEAR(turtle.GetPosition().y, forwardAmount, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().x(), 0., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), forwardAmount, PRECISION);
   turtle.Backward(forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x, 0, PRECISION);
-  EXPECT_NEAR(turtle.GetPosition().y, 0, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().x(), 0, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), 0, PRECISION);
 
   turtle.Forward(s.height() + forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().y, forwardAmount, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), forwardAmount, PRECISION);
   turtle.Backward(2 * s.height() + forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().y, 0., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
 
   turtle.RotateDeg(-90);
   EXPECT_NEAR(turtle.GetHeading(), 0, PRECISION);
 
   turtle.Forward(forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x, forwardAmount, PRECISION);
-  EXPECT_NEAR(turtle.GetPosition().y, 0., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().x(), forwardAmount, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
   turtle.Backward(forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x, 0., PRECISION);
-  EXPECT_NEAR(turtle.GetPosition().y, 0., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().x(), 0., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
 
   turtle.Forward(s.width() + forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x, forwardAmount, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().x(), forwardAmount, PRECISION);
   turtle.Backward(s.width() + forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x, 0., PRECISION);
-  EXPECT_NEAR(turtle.GetPosition().y, 0., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().x(), 0., PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
 }
 
 TEST(TurtleTest, turtleMovesDiagonally)
@@ -49,8 +49,8 @@ TEST(TurtleTest, turtleMovesDiagonally)
   EXPECT_NEAR(turtle.GetHeading(), M_PI / 4, PRECISION);
 
   turtle.Forward(forwardDistance);
-  EXPECT_NEAR(turtle.GetPosition().x, sqrt(2) / 2 * forwardDistance, PRECISION);
-  EXPECT_NEAR(turtle.GetPosition().y, sqrt(2) / 2 * forwardDistance, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().x(), sqrt(2) / 2 * forwardDistance, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), sqrt(2) / 2 * forwardDistance, PRECISION);
 }
 
 TEST(TurtleTest, turtleRotatesRad)
@@ -93,17 +93,17 @@ TEST(TurtleTest, testGetSetPosition)
 {
   Size<int> s(100, 100);
   Turtle turtle(s);
-  EXPECT_EQ(turtle.GetPosition(), Point(0, 0));
+  EXPECT_EQ(turtle.GetPosition(), QPointF(0, 0));
 
   // Goes to valid position if its on canvas
-  Point newPosition = Point(10, 10);
+  QPointF newPosition(10, 10);
   turtle.SetPosition(newPosition);
   EXPECT_EQ(turtle.GetPosition(), newPosition);
 
   // Does not change position if position outside of canvas.
-  turtle.SetPosition(Point(s.width() * 2, 0));
+  turtle.SetPosition(QPointF(s.width() * 2, 0));
   EXPECT_EQ(turtle.GetPosition(), newPosition);
-  turtle.SetPosition(Point(0, s.height() * 2));
+  turtle.SetPosition(QPointF(0, s.height() * 2));
   EXPECT_EQ(turtle.GetPosition(), newPosition);
 }
 

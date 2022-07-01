@@ -2,7 +2,16 @@
 <RCC version="1.0">
 
 <qresource prefix="/">
-    <file alias="main.qml">main.qml</file>
+    <file>main.qml</file>
+    <file>NavMenu.qml</file>
+    <file>LeftPanel.qml</file>
+    <file>CommandArea.qml</file>
+    <file>CanvasArea.qml</file>
+    <file>Turtle.qml</file>
+</qresource>
+
+<qresource prefix="/pics">
+    <file alias="turtle.png">../Images/turtle.png</file>
 </qresource>
 
 </RCC>

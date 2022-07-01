@@ -57,3 +57,6 @@ Don't see a way to unit test ui. But we can code in a sensible way:
 
 1. Create canvas. Connect the sprite position to brush position.
 2. Connect commands to drawing functions.
+
+Window resizing:
+if turtle is outside the bounds of a window getting smaller, move it so it stays within the bounds (without drawing)

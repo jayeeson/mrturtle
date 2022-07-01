@@ -17,8 +17,9 @@ Turtle::Turtle(Size<int> &canvasSize)
 void Turtle::Forward(double distance, bool backward)
 {
   double backwardModifier = backward ? M_PI : 0;
-  _position.x = _position.x + fmod(distance * cos(backwardModifier + _heading), static_cast<double>(_canvasSize.width()));
-  _position.y = _position.y + fmod(distance * sin(backwardModifier + _heading), static_cast<double>(_canvasSize.height()));
+  _position.setX(_position.x() + fmod(distance * cos(backwardModifier + _heading), static_cast<double>(_canvasSize.width())));
+  _position.setY(_position.y() + fmod(distance * sin(backwardModifier + _heading), static_cast<double>(_canvasSize.height())));
+  emit PositionChanged();
 }
 
 void Turtle::Backward(double distance)
