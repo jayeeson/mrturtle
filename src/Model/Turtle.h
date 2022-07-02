@@ -70,7 +70,6 @@ inline void Turtle::SetPosition(QPointF position)
     return;
   }
   _position = position;
-  std::cout << "set position of turtle";
   emit PositionChanged();
 }
 
