@@ -1,9 +1,9 @@
 #pragma once
 
 #include "PenColor.h"
-#include "Size.h"
 #include <QObject>
 #include <QPointF>
+#include <QSize>
 #include <iostream>
 #include <cmath>
 
@@ -12,9 +12,10 @@ class Turtle : public QObject
   Q_OBJECT
   Q_PROPERTY(QPointF position READ GetPosition NOTIFY PositionChanged)
   Q_PROPERTY(double heading READ GetHeadingDeg NOTIFY HeadingChanged)
+  Q_PROPERTY(QSize canvasSize READ GetCanvasSize WRITE SetCanvasSize NOTIFY CanvasSizeChanged)
 
 public:
-  Turtle(Size<int> &canvasSize);
+  Turtle();
 
   void Forward(double distance, bool backward = false);
   void Backward(double distance);
@@ -33,9 +34,13 @@ public:
   inline bool IsVisible();
   inline bool IsPenDown();
 
+  inline QSize GetCanvasSize();
+  void SetCanvasSize(const QSize &size);
+
 signals:
   void PositionChanged();
   void HeadingChanged();
+  void CanvasSizeChanged();
 
   // helpers
 private:
@@ -47,7 +52,7 @@ private:
   bool _penDown;
   PenColor _penColor;
   double _penSize;
-  Size<int> &_canvasSize;
+  QSize _canvasSize;
   bool _visible;
 };
 
@@ -96,4 +101,9 @@ inline bool Turtle::IsVisible()
 inline bool Turtle::IsPenDown()
 {
   return _penDown;
+}
+
+inline QSize Turtle::GetCanvasSize()
+{
+  return _canvasSize;
 }

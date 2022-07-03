@@ -1,15 +1,14 @@
 #include "Turtle.h"
-#include "Size.h"
 #include <cmath>
 #include <iostream>
 
-Turtle::Turtle(Size<int> &canvasSize)
+Turtle::Turtle()
     : _heading(M_PI / 2.),
       _position(0, 0),
       _penDown(true),
       _penColor(PenColor::black),
       _penSize(3),
-      _canvasSize(canvasSize),
+      _canvasSize(),
       _visible(true)
 {
 }
@@ -31,6 +30,7 @@ void Turtle::RotateRad(double angle)
 {
   _heading += angle;
   _heading = ClampAngleToUnitCircle(_heading);
+  emit HeadingChanged();
 }
 
 void Turtle::RotateDeg(double angle)
@@ -42,6 +42,7 @@ void Turtle::SetHeading(double angle)
 {
   double newHeading = angle;
   _heading = ClampAngleToUnitCircle(newHeading);
+  emit HeadingChanged();
 }
 
 double Turtle::ClampAngleToUnitCircle(double angle)
@@ -55,4 +56,10 @@ double Turtle::ClampAngleToUnitCircle(double angle)
     angle = 2 * M_PI + angle;
   }
   return angle;
+}
+
+void Turtle::SetCanvasSize(const QSize &size)
+{
+  _canvasSize = size;
+  emit CanvasSizeChanged();
 }

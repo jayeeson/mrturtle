@@ -10,4 +10,10 @@ Canvas {
   anchors.topMargin: -navMenu.border.width
   anchors.top: navMenu.bottom
   z: 1
+
+  Binding {
+    target: cppTurtle
+    property: "canvasSize"
+    value: Qt.size(width, height)
+  }
 }

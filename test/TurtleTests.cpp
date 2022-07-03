@@ -6,8 +6,9 @@ static double PRECISION = 1E-8;
 
 TEST(TurtleTest, turtleMovesOrthogonally)
 {
-  Size<int> s(420, 69);
-  Turtle turtle(s);
+  Turtle turtle;
+  turtle.SetCanvasSize(QSize(420, 69));
+
   int forwardAmount = 5;
 
   turtle.Forward(forwardAmount);
@@ -17,9 +18,9 @@ TEST(TurtleTest, turtleMovesOrthogonally)
   EXPECT_NEAR(turtle.GetPosition().x(), 0, PRECISION);
   EXPECT_NEAR(turtle.GetPosition().y(), 0, PRECISION);
 
-  turtle.Forward(s.height() + forwardAmount);
+  turtle.Forward(turtle.GetCanvasSize().height() + forwardAmount);
   EXPECT_NEAR(turtle.GetPosition().y(), forwardAmount, PRECISION);
-  turtle.Backward(2 * s.height() + forwardAmount);
+  turtle.Backward(2 * turtle.GetCanvasSize().height() + forwardAmount);
   EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
 
   turtle.RotateDeg(-90);
@@ -32,17 +33,17 @@ TEST(TurtleTest, turtleMovesOrthogonally)
   EXPECT_NEAR(turtle.GetPosition().x(), 0., PRECISION);
   EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
 
-  turtle.Forward(s.width() + forwardAmount);
+  turtle.Forward(turtle.GetCanvasSize().width() + forwardAmount);
   EXPECT_NEAR(turtle.GetPosition().x(), forwardAmount, PRECISION);
-  turtle.Backward(s.width() + forwardAmount);
+  turtle.Backward(turtle.GetCanvasSize().width() + forwardAmount);
   EXPECT_NEAR(turtle.GetPosition().x(), 0., PRECISION);
   EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
 }
 
 TEST(TurtleTest, turtleMovesDiagonally)
 {
-  Size<int> s(100, 100);
-  Turtle turtle(s);
+  Turtle turtle;
+  turtle.SetCanvasSize(QSize(420, 69));
   int forwardDistance = 5;
 
   turtle.RotateDeg(-45);
@@ -55,8 +56,8 @@ TEST(TurtleTest, turtleMovesDiagonally)
 
 TEST(TurtleTest, turtleRotatesRad)
 {
-  Size<int> s(420, 69);
-  Turtle turtle(s);
+  Turtle turtle;
+  turtle.SetCanvasSize(QSize(420, 69));
 
   turtle.RotateRad(M_PI / 2);
   EXPECT_NEAR(turtle.GetHeading(), M_PI, PRECISION);
@@ -73,8 +74,8 @@ TEST(TurtleTest, turtleRotatesRad)
 
 TEST(TurtleTest, turtleRotatesDeg)
 {
-  Size<int> s(420, 69);
-  Turtle turtle(s);
+  Turtle turtle;
+  turtle.SetCanvasSize(QSize(420, 69));
 
   turtle.RotateDeg(90);
   EXPECT_NEAR(turtle.GetHeading(), M_PI, PRECISION);
@@ -91,8 +92,8 @@ TEST(TurtleTest, turtleRotatesDeg)
 
 TEST(TurtleTest, testGetSetPosition)
 {
-  Size<int> s(100, 100);
-  Turtle turtle(s);
+  Turtle turtle;
+  turtle.SetCanvasSize(QSize(100, 100));
   EXPECT_EQ(turtle.GetPosition(), QPointF(0, 0));
 
   // Goes to valid position if its on canvas
@@ -100,17 +101,17 @@ TEST(TurtleTest, testGetSetPosition)
   turtle.SetPosition(newPosition);
   EXPECT_EQ(turtle.GetPosition(), newPosition);
 
-  // Does not change position if position outside of canvas.
-  turtle.SetPosition(QPointF(s.width() * 2, 0));
+  // Does not change position if position outside of canvaturtle.GetCanvasSize().
+  turtle.SetPosition(QPointF(turtle.GetCanvasSize().width() * 2, 0));
   EXPECT_EQ(turtle.GetPosition(), newPosition);
-  turtle.SetPosition(QPointF(0, s.height() * 2));
+  turtle.SetPosition(QPointF(0, turtle.GetCanvasSize().height() * 2));
   EXPECT_EQ(turtle.GetPosition(), newPosition);
 }
 
 TEST(TurtleTest, testGetSetHeading)
 {
-  Size<int> s(100, 100);
-  Turtle turtle(s);
+  Turtle turtle;
+  turtle.SetCanvasSize(QSize(420, 69));
 
   // default pointed upward
   EXPECT_EQ(turtle.GetHeading(), M_PI / 2);
@@ -128,8 +129,8 @@ TEST(TurtleTest, testGetSetHeading)
 
 TEST(TurtleTest, testPenDown)
 {
-  Size<int> s(100, 100);
-  Turtle turtle(s);
+  Turtle turtle;
+  turtle.SetCanvasSize(QSize(420, 69));
 
   // pen down by default
   EXPECT_EQ(turtle.IsPenDown(), true);
@@ -143,8 +144,8 @@ TEST(TurtleTest, testPenDown)
 
 TEST(TurtleTest, testVisibility)
 {
-  Size<int> s(100, 100);
-  Turtle turtle(s);
+  Turtle turtle;
+  turtle.SetCanvasSize(QSize(420, 69));
 
   // visible by default
   EXPECT_EQ(turtle.IsVisible(), true);
