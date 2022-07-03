@@ -23,8 +23,9 @@ Item {
 
   ScrollView {
     id: commandHistoryScroller
+    property var myMaxHeight: commandAreaBackground.height - inputArea.height - commandAreaBackground.border.width * 2
     width: parent.width
-    height: commandAreaBackground.height - inputArea.height - commandAreaBackground.border.width * 2
+    height: contentHeight > myMaxHeight ? myMaxHeight: contentHeight
     anchors.bottom: inputArea.top
     TextArea {
       id: previousCommandText
@@ -57,8 +58,7 @@ Item {
       property var historyModeActiveIndex: 0
       property var ignoreTextChange: false
       width: inputArea.width - 24
-      // text: "Enter some commands here..."
-      text: "1. The quick bown dog jumps over the lazy dog. 2. The quick bown dog jumps over the lazy dog. 3. The quick bown dog jumps over the lazy dog. 4. The quick bown dog jumps over the lazy dog."
+      text: "Enter some commands here..."
       color: '#444444'
       x: 10
       y: 5
