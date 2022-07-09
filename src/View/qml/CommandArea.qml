@@ -29,13 +29,26 @@ Item {
     anchors.bottom: inputArea.top
     TextArea {
       id: previousCommandText
+      objectName: "previousCommandTextArea"
       width: parent.width
       height: parent.height
       text: ""
       readOnly: true
       wrapMode: TextEdit.NoWrap
+
+      function addCommandFeedbackLine(str)
+      {
+        append(str);
+      }
+
+      Connections {
+        target: cppCanvas
+        onAddLineToCommandHistoryPanel: previousCommandText.addCommandFeedbackLine(line)
+      }
     }
+
   }
+
 
   Rectangle {
     id: inputArea
@@ -97,9 +110,12 @@ Item {
           previousCommandText.append(inputArea.commandHistory[inputArea.commandHistory.length - 1]);
           commandHistoryScroller.contentItem.contentX = 0
           ignoreTextChange = true;
-          text = "";
 
           // todo: hook to command handler
+          cppCommand.Parse(text);
+          cppCommand.Execute();
+
+          text = "";
         }
       }
 

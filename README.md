@@ -51,6 +51,18 @@ Allow parsing of multiple commands in a line
 Create textbox area in ui. Enter prints the line and moves to next line.
 Up key cycles through previous commands.
 
+Commands:
+
+```
+{
+  forward | fd
+  backward | bk
+  right | rt
+  left | lt
+  position | pos
+}
+```
+
 #### PART 2: Canvas
 
 Don't see a way to unit test ui. But we can code in a sensible way:
@@ -60,3 +72,7 @@ Don't see a way to unit test ui. But we can code in a sensible way:
 
 Window resizing:
 if turtle is outside the bounds of a window getting smaller, move it so it stays within the bounds (without drawing)
+
+#### Window
+
+model for window stuff. Basically all data inside the UI that's not the sprite & is interesting...

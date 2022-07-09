@@ -2,22 +2,26 @@
 #include <cmath>
 #include <iostream>
 
-Turtle::Turtle()
+Turtle::Turtle(CanvasData &canvas)
     : _heading(M_PI / 2.),
       _position(0, 0),
       _penDown(true),
       _penColor(PenColor::black),
       _penSize(3),
-      _canvasSize(),
+      _canvas(canvas),
       _visible(true)
 {
 }
 
 void Turtle::Forward(double distance, bool backward)
 {
-  double backwardModifier = backward ? M_PI : 0;
-  _position.setX(_position.x() + fmod(distance * cos(backwardModifier + _heading), static_cast<double>(_canvasSize.width())));
-  _position.setY(_position.y() + fmod(distance * sin(backwardModifier + _heading), static_cast<double>(_canvasSize.height())));
+  const double backardModifier = backward ? M_PI : 0;
+  _position.setX(fmod(_position.x() + distance * cos(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().width() / 2,
+                      static_cast<double>(_canvas.GetCanvasSize().width())) -
+                 _canvas.GetOriginalCanvasSize().width() / 2);
+  _position.setY(fmod(_position.y() + distance * sin(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().height() / 2,
+                      static_cast<double>(_canvas.GetCanvasSize().height())) -
+                 _canvas.GetOriginalCanvasSize().height() / 2);
   emit PositionChanged();
 }
 
@@ -56,10 +60,4 @@ double Turtle::ClampAngleToUnitCircle(double angle)
     angle = 2 * M_PI + angle;
   }
   return angle;
-}
-
-void Turtle::SetCanvasSize(const QSize &size)
-{
-  _canvasSize = size;
-  emit CanvasSizeChanged();
 }

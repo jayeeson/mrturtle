@@ -1,9 +1,9 @@
 #pragma once
 
 #include "PenColor.h"
+#include "CanvasData.h"
 #include <QObject>
 #include <QPointF>
-#include <QSize>
 #include <iostream>
 #include <cmath>
 
@@ -12,10 +12,9 @@ class Turtle : public QObject
   Q_OBJECT
   Q_PROPERTY(QPointF position READ GetPosition NOTIFY PositionChanged)
   Q_PROPERTY(double heading READ GetHeadingDeg NOTIFY HeadingChanged)
-  Q_PROPERTY(QSize canvasSize READ GetCanvasSize WRITE SetCanvasSize NOTIFY CanvasSizeChanged)
 
 public:
-  Turtle();
+  Turtle(CanvasData &canvas);
 
   void Forward(double distance, bool backward = false);
   void Backward(double distance);
@@ -34,13 +33,11 @@ public:
   inline bool IsVisible();
   inline bool IsPenDown();
 
-  inline QSize GetCanvasSize();
-  void SetCanvasSize(const QSize &size);
+  inline CanvasData &GetCanvas();
 
 signals:
   void PositionChanged();
   void HeadingChanged();
-  void CanvasSizeChanged();
 
   // helpers
 private:
@@ -52,9 +49,12 @@ private:
   bool _penDown;
   PenColor _penColor;
   double _penSize;
-  QSize _canvasSize;
   bool _visible;
+  CanvasData &_canvas;
 };
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 inline void Turtle::PenDown(bool down)
 {
@@ -68,7 +68,7 @@ inline void Turtle::SetVisible(bool visible)
 
 inline void Turtle::SetPosition(QPointF position)
 {
-  if (abs(position.x() * 2) > _canvasSize.width() || abs(position.y() * 2) > _canvasSize.height())
+  if (abs(position.x() * 2) > _canvas.GetCanvasSize().width() || abs(position.y() * 2) > _canvas.GetCanvasSize().height())
   {
     // todo: log error
     std::cout << "error setting turtle position";
@@ -80,6 +80,7 @@ inline void Turtle::SetPosition(QPointF position)
 
 inline QPointF Turtle::GetPosition()
 {
+  // std::cout << "position:" << QString::number(_position.x()).toStdString() << "," << QString::number(_position.y()).toStdString() << std::endl;
   return _position;
 }
 
@@ -103,7 +104,7 @@ inline bool Turtle::IsPenDown()
   return _penDown;
 }
 
-inline QSize Turtle::GetCanvasSize()
+inline CanvasData &Turtle::GetCanvas()
 {
-  return _canvasSize;
+  return _canvas;
 }

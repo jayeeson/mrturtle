@@ -3,10 +3,8 @@ import QtQuick.Controls 2.0
 
 ApplicationWindow {
   id: mainWindow
-  property var minHeight: 768
-  property var minWidth: 768
-  minimumHeight: minHeight
-  minimumWidth: minWidth
+  minimumHeight: 768
+  minimumWidth: 768
   visible: true
 
   Rectangle {
@@ -36,5 +34,7 @@ ApplicationWindow {
     CommandArea {
       id: commandArea
     }
+
+
   }
 }
