@@ -6,6 +6,8 @@
     <file>NavMenu.qml</file>
     <file>LeftPanel.qml</file>
     <file>CommandArea.qml</file>
+    <file>InputArea.qml</file>
+    <file>CommandHistory.qml</file>
     <file>CanvasArea.qml</file>
     <file>Turtle.qml</file>
 </qresource>
