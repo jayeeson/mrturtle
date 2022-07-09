@@ -16,12 +16,16 @@ Turtle::Turtle(CanvasData &canvas)
 void Turtle::Forward(double distance, bool backward)
 {
   const double backardModifier = backward ? M_PI : 0;
-  _position.setX(fmod(_position.x() + distance * cos(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().width() / 2,
-                      static_cast<double>(_canvas.GetCanvasSize().width())) -
-                 _canvas.GetOriginalCanvasSize().width() / 2);
-  _position.setY(fmod(_position.y() + distance * sin(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().height() / 2,
-                      static_cast<double>(_canvas.GetCanvasSize().height())) -
-                 _canvas.GetOriginalCanvasSize().height() / 2);
+  const double newX = _position.x() + distance * cos(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().width() / 2;
+  const double newY = _position.y() + distance * sin(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().height() / 2;
+  const int negativeXModifier = newX < 0 ? -1 : 1;
+  const int negativeYModifier = newY < 0 ? -1 : 1;
+
+  _position.setX(negativeXModifier * newX -
+                 floor(newX / _canvas.GetCanvasSize().width()) * _canvas.GetCanvasSize().width() - _canvas.GetOriginalCanvasSize().width() / 2);
+  _position.setY(negativeYModifier * newY -
+                 floor(newY / _canvas.GetCanvasSize().height()) * _canvas.GetCanvasSize().height() - _canvas.GetOriginalCanvasSize().height() / 2);
+
   emit PositionChanged();
 }
 

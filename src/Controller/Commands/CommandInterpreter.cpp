@@ -51,11 +51,13 @@ void CommandInterpreter::Parse(QString command)
   }
 }
 
-void CommandInterpreter::Execute()
+bool CommandInterpreter::Execute()
 {
   if (_cmd != nullptr)
   {
     _cmd->Execute();
     _cmd.reset(nullptr);
+    return true;
   }
+  return false;
 }

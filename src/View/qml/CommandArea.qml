@@ -76,6 +76,7 @@ Item {
       x: 10
       y: 5
       wrapMode: TextInput.Wrap
+      focus: true
 
       onTextChanged: {
         if (ignoreTextChange)
@@ -106,8 +107,11 @@ Item {
       onAccepted: {
         if ( text !== "")
         {
-          inputArea.commandHistory.push(text)
-          previousCommandText.append(inputArea.commandHistory[inputArea.commandHistory.length - 1]);
+          if (inputArea.commandHistory[inputArea.commandHistory.length - 1] != text)
+          {
+            inputArea.commandHistory.push(text)
+          }
+          previousCommandText.append(text);
           commandHistoryScroller.contentItem.contentX = 0
           ignoreTextChange = true;
 

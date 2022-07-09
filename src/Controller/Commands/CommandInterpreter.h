@@ -18,7 +18,7 @@ public:
   CommandInterpreter(Turtle &turtle, CanvasData &canvas);
 
   Q_INVOKABLE void Parse(QString command);
-  Q_INVOKABLE void Execute();
+  Q_INVOKABLE bool Execute();
 
 signals:
   void AddLineToCommandLog(QString str);
