@@ -63,7 +63,8 @@ Rectangle {
           inputAreaRect.commandHistory.push(text)
         }
         commandHistoryScroller.model.append({line: text, textColor: "black"});
-        commandHistoryScroller.contentItem.contentX = 0
+        commandHistoryScroller.contentX = 0
+        commandHistoryScroller.contentY = commandHistoryScroller.contentHeight
         ignoreTextChange = true;
 
         // todo: hook to command handler
