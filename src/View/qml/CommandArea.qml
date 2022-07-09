@@ -21,32 +21,38 @@ Item {
     border.width: mainRect.border.width
   }
 
-  ScrollView {
+  ListView {
     id: commandHistoryScroller
-    property var myMaxHeight: commandAreaBackground.height - inputArea.height - commandAreaBackground.border.width * 2
+    property var myMaxHeight: commandAreaBackground.height - inputArea.height - commandAreaBackground.border.width * 2 - 20
     width: parent.width
-    height: contentHeight > myMaxHeight ? myMaxHeight: contentHeight
+    height: contentItem.childrenRect.height > myMaxHeight ? myMaxHeight: contentItem.childrenRect.height
     anchors.bottom: inputArea.top
-    TextArea {
+    anchors.bottomMargin: 3
+    anchors.left: parent.left
+    anchors.leftMargin: 10
+
+    model: ListModel {
       id: previousCommandText
-      objectName: "previousCommandTextArea"
-      width: parent.width
-      height: parent.height
-      text: ""
-      readOnly: true
-      wrapMode: TextEdit.NoWrap
-
-      function addCommandFeedbackLine(str)
+      function addCommandFeedbackLine(str, color)
       {
-        append(str);
-      }
-
-      Connections {
-        target: cppCanvas
-        onAddLineToCommandHistoryPanel: previousCommandText.addCommandFeedbackLine(line)
+        var textColor = color != "" ? color: textLine.color;
+        append({line: str, textColor: textColor});
       }
     }
 
+    delegate: Text {
+      id: textLine
+      text: line
+      wrapMode: TextEdit.NoWrap
+      color: textColor ? textColor: 'black'
+    }
+
+  }
+
+
+  Connections {
+    target: cppCanvas
+    onAddLineToCommandHistoryPanel: previousCommandText.addCommandFeedbackLine(line, color)
   }
 
 
@@ -111,7 +117,7 @@ Item {
           {
             inputArea.commandHistory.push(text)
           }
-          previousCommandText.append(text);
+          previousCommandText.append({line: text});
           commandHistoryScroller.contentItem.contentX = 0
           ignoreTextChange = true;
 

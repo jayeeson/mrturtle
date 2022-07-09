@@ -12,7 +12,7 @@ void CanvasData::SetOriginalCanvasSize(const QSize &size)
   emit OriginalCanvasSizeChanged();
 }
 
-void CanvasData::DoAddLineToCommandHistoryPanel(QString line)
+void CanvasData::DoAddLineToCommandHistoryPanel(QString line, QString color)
 {
-  emit addLineToCommandHistoryPanel(line);
+  emit addLineToCommandHistoryPanel(line, color);
 }

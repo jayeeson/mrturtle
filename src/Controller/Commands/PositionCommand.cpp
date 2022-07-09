@@ -15,5 +15,5 @@ void PositionCommand::Execute()
 {
   QPointF pos = _turtle.GetPosition();
   QString line = "position (" + QString::number(pos.x()) + "," + QString::number(pos.y()) + ")";
-  _canvas.DoAddLineToCommandHistoryPanel(line);
+  _canvas.DoAddLineToCommandHistoryPanel(line, "blue");
 }

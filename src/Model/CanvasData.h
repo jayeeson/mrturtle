@@ -23,12 +23,12 @@ public:
   void SetCanvasSize(const QSize &size);
   void SetOriginalCanvasSize(const QSize &size);
 
-  void DoAddLineToCommandHistoryPanel(QString line);
+  void DoAddLineToCommandHistoryPanel(QString line, QString color = "");
 
 signals:
   void CanvasSizeChanged();
   void OriginalCanvasSizeChanged();
-  void addLineToCommandHistoryPanel(QString line);
+  void addLineToCommandHistoryPanel(QString line, QString color = "");
 
 private:
   QSize _canvasSize;
