@@ -1,6 +1,8 @@
 #include "CommandInterpreter.h"
 #include "ForwardCommand.h"
 #include "BackwardCommand.h"
+#include "RightCommand.h"
+#include "LeftCommand.h"
 #include "PositionCommand.h"
 #include "CanvasData.h"
 #include <map>
@@ -10,6 +12,8 @@
 static const std::map<std::string, const char *> commandRegexes{
     {"forward", "(forward|fd)\\s+(\\d+?\\.?\\d+)"},
     {"backward", "(backward|bk)\\s+(\\d+?\\.?\\d+)"},
+    {"right", "(right|rt)\\s+(\\d+?\\.?\\d+)"},
+    {"left", "(left|lt)\\s+(\\d+?\\.?\\d+)"},
     {"position", "(position|pos)(\\s+)?"}};
 
 CommandInterpreter::CommandInterpreter(Turtle &turtle, CanvasData &canvas)
@@ -29,6 +33,16 @@ void CommandInterpreter::Parse(QString command)
   {
     double value = atof(match[2].str().c_str());
     _cmd.reset(new BackwardCommand(_turtle, value));
+  }
+  else if (std::regex_match(command.toStdString().c_str(), match, std::regex(commandRegexes.at("right"))))
+  {
+    double value = atof(match[2].str().c_str());
+    _cmd.reset(new RightCommand(_turtle, value));
+  }
+  else if (std::regex_match(command.toStdString().c_str(), match, std::regex(commandRegexes.at("left"))))
+  {
+    double value = atof(match[2].str().c_str());
+    _cmd.reset(new LeftCommand(_turtle, value));
   }
   else if (std::regex_match(command.toStdString().c_str(), match, std::regex(commandRegexes.at("position"))))
   {
