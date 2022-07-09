@@ -35,7 +35,7 @@ Item {
       id: previousCommandText
       function addCommandFeedbackLine(str, color)
       {
-        var textColor = color != "" ? color: textLine.color;
+        var textColor = color !== "" ? color: textLine.color;
         append({line: str, textColor: textColor});
       }
     }
@@ -44,11 +44,9 @@ Item {
       id: textLine
       text: line
       wrapMode: TextEdit.NoWrap
-      color: textColor ? textColor: 'black'
+      color: textColor != undefined ? textColor: 'black'
     }
-
   }
-
 
   Connections {
     target: cppCanvas
