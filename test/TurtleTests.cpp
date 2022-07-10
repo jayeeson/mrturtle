@@ -34,28 +34,19 @@ TEST_P(TurtleMovesOrthogonallyTestFixture, turtleMovesOrthogonally)
   EXPECT_NEAR(turtle.GetPosition().y(), 0, PRECISION);
 
   int heightOrWidth = 0;
-  int negativeModifierX = 1;
-  int negativeModifierY = 1;
   if (heading == 0 || heading == M_PI)
   {
     heightOrWidth = turtle.GetCanvas().GetCanvasSize().width();
-    if (heading == M_PI)
-    {
-      negativeModifierX = -1;
-    }
   }
   else if (heading == M_PI / 2 || heading == 3 * M_PI / 2)
   {
     heightOrWidth = turtle.GetCanvas().GetCanvasSize().height();
-    if (heading == M_PI)
-    {
-      negativeModifierY = -1;
-    }
   }
   else
   {
     FAIL() << "Heading is not orthogonal angle. Exiting test case.";
   }
+
   turtle.Forward(heightOrWidth + forwardAmount);
   EXPECT_NEAR(turtle.GetPosition().x(), forwardAmount * cos(heading), PRECISION);
   EXPECT_NEAR(turtle.GetPosition().y(), forwardAmount * sin(heading), PRECISION);
