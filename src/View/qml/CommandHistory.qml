@@ -46,6 +46,8 @@ ListView {
       {
         commandHistoryList.contentWidth = contentWidth
       }
+      commandHistoryScroller.contentX = 0
+      commandHistoryScroller.contentY = commandHistoryScroller.contentHeight
     }
   }
 }

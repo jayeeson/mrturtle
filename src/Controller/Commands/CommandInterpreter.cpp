@@ -9,12 +9,15 @@
 #include <regex>
 #include <iostream>
 
-static const std::map<std::string, const char *> commandRegexes{
-    {"forward", "(forward|fd)\\s+(\\d+?\\.?\\d+)"},
-    {"backward", "(backward|bk)\\s+(\\d+?\\.?\\d+)"},
-    {"right", "(right|rt)\\s+(\\d+?\\.?\\d+)"},
-    {"left", "(left|lt)\\s+(\\d+?\\.?\\d+)"},
-    {"position", "(position|pos)(\\s+)?"}};
+const std::string DECIMAL_REGEX = "((\\d+\\.?\\d*)|(\\.\\d+))";
+
+static const std::map<std::string, std::string>
+    commandRegexes{
+        {"forward", "(forward|fd)\\s+" + DECIMAL_REGEX},
+        {"backward", "(backward|bk)\\s+" + DECIMAL_REGEX},
+        {"right", "(right|rt)\\s+" + DECIMAL_REGEX},
+        {"left", "(left|lt)\\s+" + DECIMAL_REGEX},
+        {"position", "(position|pos)(\\s+)?"}};
 
 CommandInterpreter::CommandInterpreter(Turtle &turtle, CanvasData &canvas)
     : _turtle(turtle), _canvas(canvas)
@@ -23,28 +26,29 @@ CommandInterpreter::CommandInterpreter(Turtle &turtle, CanvasData &canvas)
 
 void CommandInterpreter::Parse(QString command)
 {
-  std::cmatch match;
-  if (std::regex_match(command.toStdString().c_str(), match, std::regex(commandRegexes.at("forward"))))
+  std::smatch match;
+  auto commandStr = command.toStdString();
+  if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("forward"))))
   {
     double value = atof(match[2].str().c_str());
     _cmd.reset(new ForwardCommand(_turtle, value));
   }
-  else if (std::regex_match(command.toStdString().c_str(), match, std::regex(commandRegexes.at("backward"))))
+  else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("backward"))))
   {
     double value = atof(match[2].str().c_str());
     _cmd.reset(new BackwardCommand(_turtle, value));
   }
-  else if (std::regex_match(command.toStdString().c_str(), match, std::regex(commandRegexes.at("right"))))
+  else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("right"))))
   {
     double value = atof(match[2].str().c_str());
     _cmd.reset(new RightCommand(_turtle, value));
   }
-  else if (std::regex_match(command.toStdString().c_str(), match, std::regex(commandRegexes.at("left"))))
+  else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("left"))))
   {
     double value = atof(match[2].str().c_str());
     _cmd.reset(new LeftCommand(_turtle, value));
   }
-  else if (std::regex_match(command.toStdString().c_str(), match, std::regex(commandRegexes.at("position"))))
+  else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("position"))))
   {
     double value = atof(match[2].str().c_str());
     _cmd.reset(new PositionCommand(_turtle, _canvas));

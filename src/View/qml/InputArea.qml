@@ -64,10 +64,9 @@ Rectangle {
         }
         commandHistoryScroller.model.append({line: text, textColor: "black"});
         commandHistoryScroller.contentX = 0
-        commandHistoryScroller.contentY = commandHistoryScroller.contentHeight
+        commandHistoryScroller.positionViewAtEnd()
         ignoreTextChange = true;
 
-        // todo: hook to command handler
         cppCommand.Parse(text);
         cppCommand.Execute();
 

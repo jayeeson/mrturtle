@@ -16,15 +16,30 @@ Turtle::Turtle(CanvasData &canvas)
 void Turtle::Forward(double distance, bool backward)
 {
   const double backardModifier = backward ? M_PI : 0;
-  const double newX = _position.x() + distance * cos(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().width() / 2;
-  const double newY = _position.y() + distance * sin(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().height() / 2;
-  const int negativeXModifier = newX < 0 ? -1 : 1;
-  const int negativeYModifier = newY < 0 ? -1 : 1;
+  double newX = _position.x() + distance * cos(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().width() / 2;
+  double newY = _position.y() + distance * sin(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().height() / 2;
 
-  _position.setX(negativeXModifier * newX -
-                 floor(newX / _canvas.GetCanvasSize().width()) * _canvas.GetCanvasSize().width() - _canvas.GetOriginalCanvasSize().width() / 2);
-  _position.setY(negativeYModifier * newY -
-                 floor(newY / _canvas.GetCanvasSize().height()) * _canvas.GetCanvasSize().height() - _canvas.GetOriginalCanvasSize().height() / 2);
+  if (newX < 0)
+  {
+    auto wraps = floor(-newX / _canvas.GetCanvasSize().width());
+    newX = _canvas.GetCanvasSize().width() + (newX + wraps * _canvas.GetCanvasSize().width());
+    _position.setX(newX - _canvas.GetOriginalCanvasSize().width() / 2);
+  }
+  else
+  {
+    _position.setX(newX - floor(newX / _canvas.GetCanvasSize().width()) * _canvas.GetCanvasSize().width() - _canvas.GetOriginalCanvasSize().width() / 2);
+  }
+
+  if (newY < 0)
+  {
+    auto wraps = floor(-newY / _canvas.GetCanvasSize().height());
+    newY = _canvas.GetCanvasSize().height() + (newY + wraps * _canvas.GetCanvasSize().height());
+    _position.setY(newY - _canvas.GetOriginalCanvasSize().height() / 2);
+  }
+  else
+  {
+    _position.setY(newY - floor(newY / _canvas.GetCanvasSize().height()) * _canvas.GetCanvasSize().height() - _canvas.GetOriginalCanvasSize().height() / 2);
+  }
 
   emit PositionChanged();
 }

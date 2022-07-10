@@ -2,41 +2,64 @@
 #include <cmath>
 #include <gtest/gtest.h>
 
-static double PRECISION = 1E-8;
+static double PRECISION = 1E-6;
 
-TEST(TurtleTest, turtleMovesOrthogonally)
+class TurtleMovesOrthogonallyTestFixture : public ::testing::TestWithParam<double>
 {
+protected:
+  TurtleMovesOrthogonallyTestFixture() : canvas(), turtle(canvas)
+  {
+  }
   CanvasData canvas;
-  Turtle turtle(canvas);
-  turtle.GetCanvas().SetCanvasSize(QSize(420, 69));
+  Turtle turtle;
+};
 
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+TEST_P(TurtleMovesOrthogonallyTestFixture, turtleMovesOrthogonally)
+{
+  turtle.GetCanvas().SetCanvasSize(QSize(420, 69));
+  turtle.GetCanvas().SetOriginalCanvasSize(QSize(420, 69));
   int forwardAmount = 5;
 
+  const double heading = GetParam();
+  turtle.SetHeading(heading);
+
   turtle.Forward(forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x(), 0., PRECISION);
-  EXPECT_NEAR(turtle.GetPosition().y(), forwardAmount, PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().x(), forwardAmount * cos(heading), PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), forwardAmount * sin(heading), PRECISION);
   turtle.Backward(forwardAmount);
   EXPECT_NEAR(turtle.GetPosition().x(), 0, PRECISION);
   EXPECT_NEAR(turtle.GetPosition().y(), 0, PRECISION);
 
-  turtle.Forward(turtle.GetCanvas().GetCanvasSize().height() + forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().y(), forwardAmount, PRECISION);
-  turtle.Backward(2 * turtle.GetCanvas().GetCanvasSize().height() + forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
-
-  turtle.RotateDeg(-90);
-  EXPECT_NEAR(turtle.GetHeading(), 0, PRECISION);
-
-  turtle.Forward(forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x(), forwardAmount, PRECISION);
-  EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
-  turtle.Backward(forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x(), 0., PRECISION);
-  EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
-
-  turtle.Forward(turtle.GetCanvas().GetCanvasSize().width() + forwardAmount);
-  EXPECT_NEAR(turtle.GetPosition().x(), forwardAmount, PRECISION);
-  turtle.Backward(turtle.GetCanvas().GetCanvasSize().width() + forwardAmount);
+  int heightOrWidth = 0;
+  int negativeModifierX = 1;
+  int negativeModifierY = 1;
+  if (heading == 0 || heading == M_PI)
+  {
+    heightOrWidth = turtle.GetCanvas().GetCanvasSize().width();
+    if (heading == M_PI)
+    {
+      negativeModifierX = -1;
+    }
+  }
+  else if (heading == M_PI / 2 || heading == 3 * M_PI / 2)
+  {
+    heightOrWidth = turtle.GetCanvas().GetCanvasSize().height();
+    if (heading == M_PI)
+    {
+      negativeModifierY = -1;
+    }
+  }
+  else
+  {
+    FAIL() << "Heading is not orthogonal angle. Exiting test case.";
+  }
+  turtle.Forward(heightOrWidth + forwardAmount);
+  EXPECT_NEAR(turtle.GetPosition().x(), forwardAmount * cos(heading), PRECISION);
+  EXPECT_NEAR(turtle.GetPosition().y(), forwardAmount * sin(heading), PRECISION);
+  turtle.Backward(heightOrWidth + forwardAmount);
   EXPECT_NEAR(turtle.GetPosition().x(), 0., PRECISION);
   EXPECT_NEAR(turtle.GetPosition().y(), 0., PRECISION);
 }
@@ -164,3 +187,5 @@ TEST(TurtleTest, testVisibility)
   turtle.SetVisible(true);
   EXPECT_EQ(turtle.IsVisible(), true);
 }
+
+INSTANTIATE_TEST_SUITE_P(TurtleOrthogonalModule, TurtleMovesOrthogonallyTestFixture, testing::Values(0, M_PI / 2, M_PI, 3 * M_PI / 2));

@@ -34,7 +34,5 @@ ApplicationWindow {
     CommandArea {
       id: commandArea
     }
-
-
   }
 }
