@@ -24,6 +24,7 @@ Rectangle {
     property var maxHeight: commandAreaBackground.height - 16 - commandAreaBackground.border.width * 2
     property var startingText: "Enter some commands here..."
     width: inputAreaRect.width - 24
+    height: contentHeight > maxHeight ? maxHeight: contentHeight
     text: startingText
     color: "#444444"
     x: 10
@@ -31,7 +32,6 @@ Rectangle {
     y: 5
     focus: true
     clip: true
-    height: contentHeight > maxHeight ? maxHeight: contentHeight
 
     onTextChanged: {
       if (ignoreTextChange)
