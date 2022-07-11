@@ -8,6 +8,6 @@ Rectangle {
   anchors.top: navMenu.bottom
   border.color: parent.border.color
   border.width: parent.border.width
-  color: '#999999'
+  color: "#999999"
   z: 3
 }

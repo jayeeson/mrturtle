@@ -11,47 +11,49 @@ Rectangle {
 
   anchors.bottom: commandAreaBackground.bottom
   anchors.bottomMargin: commandAreaBackground.border.width + 3
-  color: '#999966'
+  color: "#999966"
 
   border.width: 2
-  border.color: '#666644'
+  border.color: "#666644"
 
   TextInput {
     id: textInput
     property var inHistoryMode: false
     property var historyModeActiveIndex: 0
     property var ignoreTextChange: false
+    property var maxHeight: commandAreaBackground.height - 16 - commandAreaBackground.border.width * 2
+    property var startingText: "Enter some commands here..."
     width: inputAreaRect.width - 24
-    text: "Enter some commands here..."
-    color: '#444444'
+    text: startingText
+    color: "#444444"
     x: 10
-    y: 5
     wrapMode: TextInput.Wrap
+    y: 5
     focus: true
+    clip: true
+    height: contentHeight > maxHeight ? maxHeight: contentHeight
 
     onTextChanged: {
       if (ignoreTextChange)
       {
         ignoreTextChange = false;
       }
-      else
+      else if (inHistoryMode)
       {
         inHistoryMode = false;
       }
-      width = inputAreaRect.width - 24
-      commandHistoryScroller.contentItem.contentY = commandHistoryScroller.contentItem.contentHeight - commandHistoryScroller.height;
     }
 
     onActiveFocusChanged: {
-      if (focus && text === "Enter some commands here...")
+      if (focus && text === startingText)
       {
         text = "";
-        color= 'black';
+        color = "black";
       }
       else if (!focus && text === "")
       {
-        text = "Enter some commands here...";
-        color = '#444444';
+        text = startingText;
+        color = "#444444";
       }
     }
 

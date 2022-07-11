@@ -16,7 +16,7 @@ Item {
     id: commandAreaBackground
     width: parent.width
     height: parent.height
-    color: '#aaaa88'
+    color: "#aaaa88"
     border.color: mainRect.border.color
     border.width: mainRect.border.width
   }

@@ -5,6 +5,6 @@ Rectangle {
   height: 40
   border.color: parent.border.color
   border.width: parent.border.width
-  color: '#666666'
+  color: "#666666"
   z: 3
 }

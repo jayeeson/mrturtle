@@ -9,10 +9,10 @@ ApplicationWindow {
 
   Rectangle {
     id: mainRect
-    color: 'white'
+    color: "white"
     width: parent.width
     height: parent.height
-    border.color: 'black'
+    border.color: "black"
     border.width: 4
 
     NavMenu {
