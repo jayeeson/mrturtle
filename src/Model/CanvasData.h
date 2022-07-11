@@ -23,7 +23,12 @@ public:
   void SetCanvasSize(const QSize &size);
   void SetOriginalCanvasSize(const QSize &size);
 
+  void DrawTurtlePath(QPointF pos, double heading, double distance);
+
   void DoAddLineToCommandHistoryPanel(QString line, QString color = "");
+
+  double GetHalfWidthDiff();
+  double GetHalfHeightDiff();
 
 signals:
   void CanvasSizeChanged();

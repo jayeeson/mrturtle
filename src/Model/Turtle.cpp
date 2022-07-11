@@ -16,29 +16,31 @@ Turtle::Turtle(CanvasData &canvas)
 void Turtle::Forward(double distance, bool backward)
 {
   const double backardModifier = backward ? M_PI : 0;
-  double newX = _position.x() + distance * cos(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().width() / 2;
-  double newY = _position.y() + distance * sin(backardModifier + _heading) + _canvas.GetOriginalCanvasSize().height() / 2;
+  const double qtCoordinateOffsetX = _canvas.GetOriginalCanvasSize().width() / 2 + _canvas.GetHalfWidthDiff();
+  const double qtCoordinateOffsetY = _canvas.GetOriginalCanvasSize().height() / 2 + _canvas.GetHalfHeightDiff();
+  double newX = _position.x() + distance * cos(backardModifier + _heading) + qtCoordinateOffsetX;
+  double newY = _position.y() + distance * sin(backardModifier + _heading) + qtCoordinateOffsetY;
 
   if (newX < 0)
   {
     auto wraps = floor(-newX / _canvas.GetCanvasSize().width());
     newX = _canvas.GetCanvasSize().width() + (newX + wraps * _canvas.GetCanvasSize().width());
-    _position.setX(newX - _canvas.GetOriginalCanvasSize().width() / 2);
+    _position.setX(newX - qtCoordinateOffsetX);
   }
   else
   {
-    _position.setX(newX - floor(newX / _canvas.GetCanvasSize().width()) * _canvas.GetCanvasSize().width() - _canvas.GetOriginalCanvasSize().width() / 2);
+    _position.setX(newX - floor(newX / _canvas.GetCanvasSize().width()) * _canvas.GetCanvasSize().width() - qtCoordinateOffsetX);
   }
 
   if (newY < 0)
   {
     auto wraps = floor(-newY / _canvas.GetCanvasSize().height());
     newY = _canvas.GetCanvasSize().height() + (newY + wraps * _canvas.GetCanvasSize().height());
-    _position.setY(newY - _canvas.GetOriginalCanvasSize().height() / 2);
+    _position.setY(newY - qtCoordinateOffsetY);
   }
   else
   {
-    _position.setY(newY - floor(newY / _canvas.GetCanvasSize().height()) * _canvas.GetCanvasSize().height() - _canvas.GetOriginalCanvasSize().height() / 2);
+    _position.setY(newY - floor(newY / _canvas.GetCanvasSize().height()) * _canvas.GetCanvasSize().height() - qtCoordinateOffsetY);
   }
 
   emit PositionChanged();
