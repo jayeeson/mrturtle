@@ -16,10 +16,8 @@ Turtle::Turtle(CanvasData &canvas)
 void Turtle::Forward(double distance, bool backward)
 {
     const double backardModifier = backward ? M_PI : 0;
-    const double qtCoordinateOffsetX =
-        _canvas.GetOriginalCanvasSize().width() / 2 + _canvas.GetHalfWidthDiff();
-    const double qtCoordinateOffsetY =
-        _canvas.GetOriginalCanvasSize().height() / 2 + _canvas.GetHalfHeightDiff();
+    const double qtCoordinateOffsetX = _canvas.GetCanvasSize().width() / 2;
+    const double qtCoordinateOffsetY = _canvas.GetCanvasSize().height() / 2;
     double newX = _position.x() + distance * cos(backardModifier + _heading) + qtCoordinateOffsetX;
     double newY = _position.y() + distance * sin(backardModifier + _heading) + qtCoordinateOffsetY;
 

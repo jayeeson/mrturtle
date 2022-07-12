@@ -3,6 +3,8 @@
 #include "PenColor.h"
 #include <QObject>
 #include <QPointF>
+#include <QLine>
+#include <QList>
 #include <QSize>
 #include <QString>
 #include <iostream>
@@ -28,12 +30,14 @@ class CanvasData : public QObject
     void SetOriginalCanvasSize(const QSize &size);
     void SetMaxCanvasSize(const QSize &size);
 
-    QList<QLine> DrawTurtlePath(QPointF pos, double heading, double distance);
+    QList<QLineF> GetTurtlePath(QPointF pos, double heading, double distance);
 
     void DoAddLineToCommandHistoryPanel(QString line, QString color = "");
 
-    double GetHalfWidthDiff();
-    double GetHalfHeightDiff();
+    QPointF tl();
+    QPointF tr(const QSize &canvas);
+    QPointF bl(const QSize &canvas);
+    QPointF br(const QSize &canvas);
 
    signals:
     void CanvasSizeChanged();
@@ -43,6 +47,7 @@ class CanvasData : public QObject
 
    private:
     void UpdateMaxCanvasSizeIfNeeded();
+    void GetCanvasBordersThatCouldIntersect(double heading, QLineF &edge1, QLineF &edge2);
 
    private:
     QSize _canvasSize;

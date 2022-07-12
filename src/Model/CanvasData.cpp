@@ -25,19 +25,87 @@ void CanvasData::DoAddLineToCommandHistoryPanel(QString line, QString color)
     emit addLineToCommandHistoryPanel(line, color);
 }
 
-double CanvasData::GetHalfWidthDiff()
+QList<QLineF> CanvasData::GetTurtlePath(QPointF pos, double heading, double distance)
 {
-    const double diff = _canvasSize.width() - _origCanvasSize.width();
-    return diff / 2;
-}
+    QList<QLineF> list;
+    const double qtCoordinateOffsetX = _canvasSize.width() / 2.;   // ok for x
+    const double qtCoordinateOffsetY = _canvasSize.height() / 2.;  // not true...
 
-double CanvasData::GetHalfHeightDiff()
-{
-    const double diff = _canvasSize.height() - _origCanvasSize.height();
-    return diff / 2;
-}
+    // 1. reduce number of lines to check intersection with based on angle
+    // 2. create line new point
+    // 3. create up to 2 lines to check intersection
+    // QLine::intersects(line, insersectionPoint)
+    // 4. if no intersection, we are finished
+    // else, intersection point is p2
+    // and we translate line to new pos
+    // and decrease its length by distance moved.
+    // 5. repeat step 4 until finished.
+    QLineF edge1;  // always most clockwise edge
+    QLineF edge2;  // always most counter-clockwise edge
+    GetCanvasBordersThatCouldIntersect(heading, edge1, edge2);
+    const int numEdges =
+        edge2.p1().x() == 0 && edge2.p1().y() == 0 && edge2.p2().x() == 0 && edge2.p2().y() == 0
+            ? 1
+            : 2;
 
-QList<QLine> CanvasData::DrawTurtlePath(QPointF pos, double heading, double distance) {}
+    // qt y+ is down.. hence negatives below
+    QPointF start{pos.x() + qtCoordinateOffsetX, -pos.y() + qtCoordinateOffsetY};
+    QPointF end{start.x() + distance * cos(heading), start.y() - distance * sin(heading)};
+    QLineF line{start, end};
+
+    QPointF intersectionPoint;
+    QLineF *intersected = nullptr;
+    do
+    {
+        intersected = nullptr;
+        if (QLineF::BoundedIntersection == line.intersect(edge1, &intersectionPoint))
+        {
+            intersected = &edge1;
+        }
+        else if (numEdges == 2 &&
+                 QLineF::BoundedIntersection == line.intersect(edge2, &intersectionPoint))
+        {
+            intersected = &edge2;
+        }
+        if (intersected == nullptr)
+        {
+            break;
+        }
+
+        QLineF newLine{start, intersectionPoint};
+        list.append(newLine);
+        if (intersected->p1() == br(_canvasSize))
+        {
+            line.translate(line.p1().x() - _canvasSize.width(),
+                           intersectionPoint.y() - line.p1().y());
+        }
+        else if (intersected->p1() == tr(_canvasSize))
+        {
+            line.translate(intersectionPoint.x() - line.p1().x(),
+                           _canvasSize.height() - line.p1().y());
+        }
+        if (intersected->p1() == tl())
+        {
+            line.translate(_canvasSize.width() - line.p1().x(),
+                           intersectionPoint.y() - line.p1().y());
+        }
+        if (intersected->p1() == bl(_canvasSize))
+        {
+            line.translate(intersectionPoint.x() - line.p1().x(),
+                           line.p1().y() - _canvasSize.height());
+        }
+        line.setLength(line.length() - newLine.length());
+
+    } while (intersected != nullptr);
+
+    // final non-intersecting line that ends in middle of canvas somewhere
+    if (line.length() > 0)
+    {
+        list.append(line);
+    }
+
+    return list;
+}
 
 void CanvasData::UpdateMaxCanvasSizeIfNeeded()
 {
@@ -58,3 +126,63 @@ void CanvasData::UpdateMaxCanvasSizeIfNeeded()
         emit MaxCanvasSizeChanged();
     }
 }
+
+void CanvasData::GetCanvasBordersThatCouldIntersect(double heading, QLineF &edge1, QLineF &edge2)
+{
+    if (heading == 0)
+    {
+        edge1.setP1(br(_canvasSize));
+        edge1.setP2(tr(_canvasSize));
+    }
+    else if (heading == M_PI / 2)
+    {
+        edge1.setP1(tr(_canvasSize));
+        edge1.setP2(tl());
+    }
+    else if (heading == M_PI)
+    {
+        edge1.setP1(tl());
+        edge1.setP2(bl(_canvasSize));
+    }
+    else if (heading == 3 * M_PI / 2)
+    {
+        edge1.setP1(bl(_canvasSize));
+        edge1.setP2(br(_canvasSize));
+    }
+    else if (heading > 0 && heading < M_PI / 2)
+    {
+        edge1.setP1(br(_canvasSize));
+        edge1.setP2(tr(_canvasSize));
+        edge2.setP1(tr(_canvasSize));
+        edge2.setP2(tl());
+    }
+    else if (heading > M_PI / 2 && heading < M_PI)
+    {
+        edge1.setP1(tr(_canvasSize));
+        edge1.setP2(tl());
+        edge2.setP1(tl());
+        edge2.setP2(bl(_canvasSize));
+    }
+    else if (heading > M_PI && heading < 3 * M_PI / 2)
+    {
+        edge1.setP1(tl());
+        edge1.setP2(bl(_canvasSize));
+        edge2.setP1(bl(_canvasSize));
+        edge2.setP2(br(_canvasSize));
+    }
+    else if (heading > 3 * M_PI / 2 && heading < 2 * M_PI)
+    {
+        edge1.setP1(bl(_canvasSize));
+        edge1.setP2(br(_canvasSize));
+        edge2.setP1(br(_canvasSize));
+        edge2.setP2(tr(_canvasSize));
+    }
+}
+
+QPointF CanvasData::tl() { return QPointF(0, 0); }
+
+QPointF CanvasData::tr(const QSize &canvas) { return QPointF(canvas.width(), 0); }
+
+QPointF CanvasData::bl(const QSize &canvas) { return QPointF(0, canvas.height()); }
+
+QPointF CanvasData::br(const QSize &canvas) { return QPointF(canvas.width(), canvas.height()); }
