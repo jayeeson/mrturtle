@@ -37,7 +37,7 @@ double CanvasData::GetHalfHeightDiff()
     return diff / 2;
 }
 
-void CanvasData::DrawTurtlePath(QPointF pos, double heading, double distance) {}
+QList<QLine> CanvasData::DrawTurtlePath(QPointF pos, double heading, double distance) {}
 
 void CanvasData::UpdateMaxCanvasSizeIfNeeded()
 {

@@ -1,11 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtQuick>
-#include <iostream>
-
-#include "CanvasData.h"
 #include "CommandInterpreter.h"
 #include "Turtle.h"
+#include "CanvasData.h"
+#include <iostream>
 
 int main(int argc, char *argv[])
 {

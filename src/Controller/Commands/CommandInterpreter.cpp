@@ -1,15 +1,13 @@
 #include "CommandInterpreter.h"
-
-#include <iostream>
-#include <map>
-#include <regex>
-
-#include "BackwardCommand.h"
-#include "CanvasData.h"
 #include "ForwardCommand.h"
+#include "BackwardCommand.h"
+#include "RightCommand.h"
 #include "LeftCommand.h"
 #include "PositionCommand.h"
-#include "RightCommand.h"
+#include "CanvasData.h"
+#include <map>
+#include <regex>
+#include <iostream>
 
 const std::string DECIMAL_REGEX = "((\\d+\\.?\\d*)|(\\.\\d+))";
 

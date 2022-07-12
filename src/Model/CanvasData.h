@@ -1,13 +1,12 @@
 #pragma once
 
+#include "PenColor.h"
 #include <QObject>
 #include <QPointF>
 #include <QSize>
 #include <QString>
-#include <cmath>
 #include <iostream>
-
-#include "PenColor.h"
+#include <cmath>
 
 class CanvasData : public QObject
 {
@@ -29,7 +28,7 @@ class CanvasData : public QObject
     void SetOriginalCanvasSize(const QSize &size);
     void SetMaxCanvasSize(const QSize &size);
 
-    void DrawTurtlePath(QPointF pos, double heading, double distance);
+    QList<QLine> DrawTurtlePath(QPointF pos, double heading, double distance);
 
     void DoAddLineToCommandHistoryPanel(QString line, QString color = "");
 

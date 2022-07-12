@@ -1,11 +1,10 @@
 #pragma once
 
+#include "AbstractCommand.h"
 #include <QObject>
 #include <QString>
-#include <memory>
 #include <string>
-
-#include "AbstractCommand.h"
+#include <memory>
 
 class Turtle;
 class CanvasData;

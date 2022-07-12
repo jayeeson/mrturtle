@@ -1,12 +1,10 @@
 #include "PositionCommand.h"
-
-#include <QMetaObject>
+#include "Turtle.h"
+#include "CanvasData.h"
 #include <QObject>
+#include <QMetaObject>
 #include <QString>
 #include <iostream>
-
-#include "CanvasData.h"
-#include "Turtle.h"
 
 PositionCommand::PositionCommand(Turtle &turtle, CanvasData &canvas)
     : _turtle(turtle), _canvas(canvas)

@@ -1,8 +1,7 @@
 #pragma once
 
-#include <QPointF>
-
 #include "AbstractCommand.h"
+#include <QPointF>
 
 class Turtle;
 class CanvasData;

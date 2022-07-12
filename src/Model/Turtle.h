@@ -1,12 +1,11 @@
 #pragma once
 
+#include "PenColor.h"
+#include "CanvasData.h"
 #include <QObject>
 #include <QPointF>
-#include <cmath>
 #include <iostream>
-
-#include "CanvasData.h"
-#include "PenColor.h"
+#include <cmath>
 
 class Turtle : public QObject
 {
