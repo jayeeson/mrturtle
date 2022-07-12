@@ -1,3 +1,9 @@
 QML tutorial
 set order - elements drawn later are on top
 order of qml properties doesn't matter. 
+
+todo:
+ - line drawing... done in the canvas. Test will compare final canvas coordinate to the turtle test to make sure it's accurate (must end at same position)
+ - vector of lines is sent to painter to draw. 
+ - don't calculate if pen is up
+ - where to place the connection between the turtle and the actual drawing... Put a connection in turtle constructor i guess. 

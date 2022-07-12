@@ -2,6 +2,6 @@
 
 class AbstractCommand
 {
-public:
-  virtual void Execute() = 0;
+   public:
+    virtual void Execute() = 0;
 };

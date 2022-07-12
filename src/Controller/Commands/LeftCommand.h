@@ -6,12 +6,12 @@ class Turtle;
 
 class LeftCommand : public AbstractCommand
 {
-public:
-  LeftCommand(Turtle &turtle, double deg);
+   public:
+    LeftCommand(Turtle &turtle, double deg);
 
-  void Execute() override;
+    void Execute() override;
 
-private:
-  double _deg;
-  Turtle &_turtle;
+   private:
+    double _deg;
+    Turtle &_turtle;
 };
