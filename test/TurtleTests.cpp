@@ -1,15 +1,15 @@
-#include "Turtle.h"
-#include <cmath>
 #include <gtest/gtest.h>
+
+#include <cmath>
+
+#include "Turtle.h"
 
 static double PRECISION = 1E-6;
 
-class TurtleMovesOrthogonallyTestFixture : public ::testing::TestWithParam<double>
+class TurtleMovesOrthogonallyTestFixture : public ::testing::TestWithParam<std::pair<double, bool>>
 {
 protected:
-  TurtleMovesOrthogonallyTestFixture() : canvas(), turtle(canvas)
-  {
-  }
+  TurtleMovesOrthogonallyTestFixture() : canvas(), turtle(canvas) {}
   CanvasData canvas;
   Turtle turtle;
 };
@@ -19,11 +19,21 @@ protected:
 
 TEST_P(TurtleMovesOrthogonallyTestFixture, turtleMovesOrthogonally)
 {
-  turtle.GetCanvas().SetCanvasSize(QSize(420, 69));
-  turtle.GetCanvas().SetOriginalCanvasSize(QSize(420, 69));
-  int forwardAmount = 5;
+  auto param = GetParam();
+  const double heading = param.first;
+  const double doublePlusOneCanvasSize = param.second;
 
-  const double heading = GetParam();
+  turtle.GetCanvas().SetOriginalCanvasSize(QSize(420, 69));
+  if (doublePlusOneCanvasSize)
+  {
+    turtle.GetCanvas().SetCanvasSize(QSize(420 * 2 + 1, 69 * 2 + 1));
+  }
+  else
+  {
+    turtle.GetCanvas().SetCanvasSize(QSize(420, 69));
+  }
+
+  int forwardAmount = 5;
   turtle.SetHeading(heading);
 
   turtle.Forward(forwardAmount);
@@ -120,7 +130,8 @@ TEST(TurtleTest, testGetSetPosition)
   turtle.SetPosition(newPosition);
   EXPECT_EQ(turtle.GetPosition(), newPosition);
 
-  // Does not change position if position outside of canvaturtle.GetCanvas().GetCanvasSize().
+  // Does not change position if position outside of
+  // canvaturtle.GetCanvas().GetCanvasSize().
   turtle.SetPosition(QPointF(turtle.GetCanvas().GetCanvasSize().width() * 2, 0));
   EXPECT_EQ(turtle.GetPosition(), newPosition);
   turtle.SetPosition(QPointF(0, turtle.GetCanvas().GetCanvasSize().height() * 2));
@@ -179,4 +190,10 @@ TEST(TurtleTest, testVisibility)
   EXPECT_EQ(turtle.IsVisible(), true);
 }
 
-INSTANTIATE_TEST_SUITE_P(TurtleOrthogonalModule, TurtleMovesOrthogonallyTestFixture, testing::Values(0, M_PI / 2, M_PI, 3 * M_PI / 2));
+INSTANTIATE_TEST_SUITE_P(TurtleOrthogonalModule, TurtleMovesOrthogonallyTestFixture,
+                         testing::Values(std::make_pair(0, false), std::make_pair(M_PI / 2, false),
+                                         std::make_pair(M_PI, false),
+                                         std::make_pair(3 * M_PI / 2, false),
+                                         std::make_pair(0, true), std::make_pair(M_PI / 2, true),
+                                         std::make_pair(M_PI, true),
+                                         std::make_pair(3 * M_PI / 2, true)));
