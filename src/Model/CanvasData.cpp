@@ -57,9 +57,9 @@ QList<QLineF> CanvasData::GetTurtlePath(const QPointF &pos, double heading, doub
     // 3. repeat step 2 until finished.
 
     QList<QLineF> list;
-    const double qtCoordinateOffsetX = _canvasSize.width() / 2.;  // ok for x
+    const double qtCoordinateOffsetX = _canvasSize.width() / 2.;
 
-    const double qtCoordinateOffsetY = _canvasSize.height() / 2.;  // not true...
+    const double qtCoordinateOffsetY = _canvasSize.height() / 2.;
 
     QLineF edge1;  // always most clockwise edge
     QLineF edge2;  // always most counter-clockwise edge
@@ -87,32 +87,35 @@ QList<QLineF> CanvasData::GetTurtlePath(const QPointF &pos, double heading, doub
         {
             intersected = &edge2;
         }
-        if (intersected == nullptr)
+        else if (intersected == nullptr)
         {
             break;
         }
 
-        QLineF newLine{start, intersectionPoint};
+        QLineF newLine{line.p1(), intersectionPoint};
         list.append(newLine);
         if (intersected->p1() == br(_canvasSize))
         {
-            line.translate(line.p1().x() - _canvasSize.width(),
-                           intersectionPoint.y() - line.p1().y());
+            line.translate(-line.p1().x(), intersectionPoint.y() - line.p1().y());
         }
         else if (intersected->p1() == tr(_canvasSize))
         {
             line.translate(intersectionPoint.x() - line.p1().x(),
                            _canvasSize.height() - line.p1().y());
         }
-        if (intersected->p1() == tl())
+        else if (intersected->p1() == tl())
         {
             line.translate(_canvasSize.width() - line.p1().x(),
                            intersectionPoint.y() - line.p1().y());
         }
-        if (intersected->p1() == bl(_canvasSize))
+        else if (intersected->p1() == bl(_canvasSize))
         {
-            line.translate(intersectionPoint.x() - line.p1().x(),
-                           line.p1().y() - _canvasSize.height());
+            line.translate(intersectionPoint.x() - line.p1().x(), -line.p1().y());
+        }
+        else
+        {
+            qDebug() << "line: " << line;
+            qDebug() << "intersected: " << *intersected;
         }
         line.setLength(line.length() - newLine.length());
 
