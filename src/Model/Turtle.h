@@ -5,7 +5,6 @@
 #include <QObject>
 #include <QPointF>
 #include <iostream>
-#include <cmath>
 
 class Turtle : public QObject
 {
@@ -35,13 +34,11 @@ class Turtle : public QObject
 
     inline CanvasData &GetCanvas();
 
+    static double ClampAngleToUnitCircle(double angle);
+
    signals:
     void PositionChanged();
     void HeadingChanged();
-
-    // helpers
-   private:
-    double ClampAngleToUnitCircle(double angle);
 
    private:
     double _heading;  // value in radians

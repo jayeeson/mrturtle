@@ -34,6 +34,7 @@ class CanvasData : public QObject
 
     void DoAddLineToCommandHistoryPanel(QString line, QString color = "");
     void DoDrawPaths(const QList<QLineF> &pathList);
+    void DoClearCanvas();
 
     QPointF tl();
     QPointF tr(const QSize &canvas);
@@ -46,6 +47,7 @@ class CanvasData : public QObject
     void MaxCanvasSizeChanged();
     void addLineToCommandHistoryPanel(QString line, QString color = "");
     void drawPaths(QList<int> x1, QList<int> y1, QList<int> x2, QList<int> y2);
+    void clearCanvas();
 
    private:
     void UpdateMaxCanvasSizeIfNeeded();

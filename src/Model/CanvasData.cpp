@@ -44,6 +44,8 @@ void CanvasData::DoDrawPaths(const QList<QLineF> &pathList)
     emit drawPaths(startX, startY, endX, endY);
 }
 
+void CanvasData::DoClearCanvas() { emit clearCanvas(); }
+
 QList<QLineF> CanvasData::GetTurtlePath(const QPointF &pos, double heading, double distance)
 {
     // 1. create up to 2 lines to check intersection

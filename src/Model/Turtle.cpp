@@ -1,6 +1,5 @@
 #include "Turtle.h"
 #include <cmath>
-#include <iostream>
 
 Turtle::Turtle(CanvasData &canvas)
     : _heading(M_PI / 2.),
