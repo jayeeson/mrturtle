@@ -76,3 +76,9 @@ if turtle is outside the bounds of a window getting smaller, move it so it stays
 #### Window
 
 model for window stuff. Basically all data inside the UI that's not the sprite & is interesting...
+
+## Acknowledgements
+
+This application uses the Qt framework for front end development. Source code is available here: https://github.com/qt/qt5/tree/5.12.8
+
+Respect to Mr. Yaxley, who taught me coding with Mr. Turtle right under my nose when I was a young lad in elementary school.
