@@ -4,6 +4,8 @@
 #include "RightCommand.h"
 #include "LeftCommand.h"
 #include "PositionCommand.h"
+#include "PenDownCommand.h"
+#include "PenUpCommand.h"
 #include "CanvasData.h"
 #include <map>
 #include <regex>
@@ -16,7 +18,9 @@ static const std::map<std::string, std::string> commandRegexes{
     {"backward", "(backward|bk)\\s+" + DECIMAL_REGEX},
     {"right", "(right|rt)\\s+" + DECIMAL_REGEX},
     {"left", "(left|lt)\\s+" + DECIMAL_REGEX},
-    {"position", "(position|pos)(\\s+)?"}};
+    {"position", "(position|pos)(\\s+)?"},
+    {"penDown", "(pendown)(\\s+)?"},
+    {"penUp", "(penup)(\\s+)?"}};
 
 CommandInterpreter::CommandInterpreter(Turtle &turtle, CanvasData &canvas)
     : _turtle(turtle), _canvas(canvas)
@@ -51,6 +55,16 @@ void CommandInterpreter::Parse(QString command)
     {
         double value = atof(match[2].str().c_str());
         _cmd.reset(new PositionCommand(_turtle, _canvas));
+    }
+    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penDown"))))
+    {
+        double value = atof(match[2].str().c_str());
+        _cmd.reset(new PenDownCommand(_turtle));
+    }
+    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penUp"))))
+    {
+        double value = atof(match[2].str().c_str());
+        _cmd.reset(new PenUpCommand(_turtle));
     }
 }
 
