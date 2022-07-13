@@ -35,30 +35,23 @@ Canvas {
 
   onPaint: {
     var ctx = getContext("2d");
-    // ctx.fillStyle = Qt.rgba(1, 0, 0, 1);
-    // ctx.fillRect(widthDiff / 2, heightDiff / 2, originalWidth, originalHeight);
-    // ctx.strokeStyle = head.curveColor
     ctx.lineWidth = 2;
 
     ctx.beginPath ();
-
-
-
     if (x1List) // if one has values, all do
   {
     for(var i = 0; i < x1List.length; ++i)
   {
-    console.log("From: (", x1List[i], y1List[i], ") To: (", x2List[i], y2List[i], ")" )
     ctx.moveTo(x1List[i], y1List[i])
     ctx.lineTo(x2List[i], y2List[i])
   }
+  ctx.stroke()
+
 
   x1List = []
   y1List = []
   x2List = []
   y2List = []
-
-  ctx.stroke()
 }
 }
 
