@@ -7,13 +7,13 @@
 #include <QList>
 #include <QSize>
 #include <QString>
+#include <QVariantList>
 #include <iostream>
 #include <cmath>
 
 class CanvasData : public QObject
 {
     Q_OBJECT
-    // Q_PROPERTY(QPointF position READ GetPosition NOTIFY PositionChanged)
 
    public:
     Q_PROPERTY(QSize cppCanvasSize READ GetCanvasSize WRITE SetCanvasSize NOTIFY CanvasSizeChanged)
@@ -30,9 +30,10 @@ class CanvasData : public QObject
     void SetOriginalCanvasSize(const QSize &size);
     void SetMaxCanvasSize(const QSize &size);
 
-    QList<QLineF> GetTurtlePath(QPointF pos, double heading, double distance);
+    QList<QLineF> GetTurtlePath(const QPointF &pos, double heading, double distance);
 
     void DoAddLineToCommandHistoryPanel(QString line, QString color = "");
+    void DoDrawPaths(const QList<QLineF> &pathList);
 
     QPointF tl();
     QPointF tr(const QSize &canvas);
@@ -44,6 +45,7 @@ class CanvasData : public QObject
     void OriginalCanvasSizeChanged();
     void MaxCanvasSizeChanged();
     void addLineToCommandHistoryPanel(QString line, QString color = "");
+    void drawPaths(QList<int> x1, QList<int> y1, QList<int> x2, QList<int> y2);
 
    private:
     void UpdateMaxCanvasSizeIfNeeded();

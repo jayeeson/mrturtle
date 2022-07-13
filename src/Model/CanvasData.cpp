@@ -1,4 +1,5 @@
 #include "CanvasData.h"
+#include <QDebug>
 
 void CanvasData::SetCanvasSize(const QSize &size)
 {
@@ -25,28 +26,45 @@ void CanvasData::DoAddLineToCommandHistoryPanel(QString line, QString color)
     emit addLineToCommandHistoryPanel(line, color);
 }
 
-QList<QLineF> CanvasData::GetTurtlePath(QPointF pos, double heading, double distance)
+void CanvasData::DoDrawPaths(const QList<QLineF> &pathList)
 {
-    QList<QLineF> list;
-    const double qtCoordinateOffsetX = _canvasSize.width() / 2.;   // ok for x
-    const double qtCoordinateOffsetY = _canvasSize.height() / 2.;  // not true...
+    QList<int> startX;
+    QList<int> startY;
+    QList<int> endX;
+    QList<int> endY;
 
-    // 1. reduce number of lines to check intersection with based on angle
-    // 2. create line new point
-    // 3. create up to 2 lines to check intersection
+    for (auto it = pathList.begin(); it != pathList.end(); ++it)
+    {
+        const auto &line = it->toLine();
+        startX.append(line.x1());
+        startY.append(line.y1());
+        endX.append(line.x2());
+        endY.append(line.y2());
+    }
+    emit drawPaths(startX, startY, endX, endY);
+}
+
+QList<QLineF> CanvasData::GetTurtlePath(const QPointF &pos, double heading, double distance)
+{
+    // 1. create up to 2 lines to check intersection
     // QLine::intersects(line, insersectionPoint)
-    // 4. if no intersection, we are finished
+    // 2. if no intersection, we are finished
     // else, intersection point is p2
     // and we translate line to new pos
     // and decrease its length by distance moved.
-    // 5. repeat step 4 until finished.
+    // 3. repeat step 2 until finished.
+
+    QList<QLineF> list;
+    const double qtCoordinateOffsetX = _canvasSize.width() / 2.;  // ok for x
+
+    const double qtCoordinateOffsetY = _canvasSize.height() / 2.;  // not true...
+
     QLineF edge1;  // always most clockwise edge
     QLineF edge2;  // always most counter-clockwise edge
     GetCanvasBordersThatCouldIntersect(heading, edge1, edge2);
-    const int numEdges =
-        edge2.p1().x() == 0 && edge2.p1().y() == 0 && edge2.p2().x() == 0 && edge2.p2().y() == 0
-            ? 1
-            : 2;
+    const bool edge2IsUnset =
+        edge2.p1().x() == 0 && edge2.p1().y() == 0 && edge2.p2().x() == 0 && edge2.p2().y() == 0;
+    const int numEdges = edge2IsUnset ? 1 : 2;
 
     // qt y+ is down.. hence negatives below
     QPointF start{pos.x() + qtCoordinateOffsetX, -pos.y() + qtCoordinateOffsetY};

@@ -25,7 +25,7 @@ class Turtle : public QObject
 
     inline void PenDown(bool down);
     inline void SetVisible(bool visible);
-    inline void SetPosition(QPointF position);
+    inline void SetPosition(const QPointF &position);
 
     inline QPointF GetPosition();
     inline double GetHeading();
@@ -60,7 +60,7 @@ inline void Turtle::PenDown(bool down) { _penDown = down; }
 
 inline void Turtle::SetVisible(bool visible) { _visible = visible; }
 
-inline void Turtle::SetPosition(QPointF position)
+inline void Turtle::SetPosition(const QPointF &position)
 {
     if (abs(position.x() * 2) > _canvas.GetCanvasSize().width() ||
         abs(position.y() * 2) > _canvas.GetCanvasSize().height())
