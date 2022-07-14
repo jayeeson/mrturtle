@@ -20,8 +20,8 @@ class CanvasData : public QObject
                    OriginalCanvasSizeChanged)
     Q_PROPERTY(QSize cppMaxCanvasSize READ GetMaxCanvasSize WRITE SetMaxCanvasSize NOTIFY
                    MaxCanvasSizeChanged)
-    Q_PROPERTY(bool cppPenDown READ IsPenDown NOTIFY PenDownChanged)
     Q_PROPERTY(QColor cppPenColor READ GetPenColor NOTIFY PenColorChanged)
+    Q_PROPERTY(double cppPenSize READ GetPenSize NOTIFY PenSizeChanged)
 
     CanvasData();
 
@@ -30,6 +30,7 @@ class CanvasData : public QObject
     inline QSize GetMaxCanvasSize();
     inline bool IsPenDown();
     inline QColor GetPenColor();
+    inline double GetPenSize();
     void SetCanvasSize(const QSize &size);
     void SetOriginalCanvasSize(const QSize &size);
     void SetMaxCanvasSize(const QSize &size);
@@ -46,14 +47,15 @@ class CanvasData : public QObject
     QPointF br(const QSize &canvas);
 
     inline void SetPenDown(bool down);
-    inline void SetPenColor(const QString &color);
+    void SetPenColor(const QString &color);
+    inline void SetPenSize(double size);
 
    signals:
     void CanvasSizeChanged();
     void OriginalCanvasSizeChanged();
     void MaxCanvasSizeChanged();
-    void PenDownChanged();
     void PenColorChanged();
+    void PenSizeChanged();
     void addLineToCommandHistoryPanel(QString line, QString color = "");
     void drawPaths(QList<int> x1, QList<int> y1, QList<int> x2, QList<int> y2);
     void clearCanvas();
@@ -85,13 +87,14 @@ inline bool CanvasData::IsPenDown() { return _penDown; }
 
 inline QColor CanvasData::GetPenColor() { return _penColor; }
 
+inline double CanvasData::GetPenSize() { return _penSize; }
+
 inline void CanvasData::SetPenDown(bool down) { _penDown = down; }
 
-inline void CanvasData::SetPenColor(const QString &color)
+inline void CanvasData::SetPenSize(double size)
 {
-    if (QColor::isValidColor(color))
+    if (size > 0)
     {
-        _penColor = QColor(color);
-        emit PenColorChanged();
+        _penSize = size;
     }
 }

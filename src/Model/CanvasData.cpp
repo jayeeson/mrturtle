@@ -7,7 +7,7 @@ CanvasData::CanvasData()
       _maxCanvasSize(),
       _penDown(true),
       _penColor("black"),
-      _penSize(3)
+      _penSize(1)
 {
 }
 
@@ -219,3 +219,12 @@ QPointF CanvasData::tr(const QSize &canvas) { return QPointF(canvas.width(), 0);
 QPointF CanvasData::bl(const QSize &canvas) { return QPointF(0, canvas.height()); }
 
 QPointF CanvasData::br(const QSize &canvas) { return QPointF(canvas.width(), canvas.height()); }
+
+void CanvasData::SetPenColor(const QString &color)
+{
+    if (QColor::isValidColor(color))
+    {
+        _penColor = QColor(color);
+        emit PenColorChanged();
+    }
+}

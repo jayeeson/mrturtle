@@ -6,6 +6,7 @@
 #include "PositionCommand.h"
 #include "PenDownCommand.h"
 #include "PenUpCommand.h"
+#include "PenSizeCommand.h"
 #include "ColorCommand.h"
 #include "ClearCommand.h"
 #include "HomeCommand.h"
@@ -22,12 +23,13 @@ static const std::map<std::string, std::string> commandRegexes{
     {"backward", "(backward|bk)\\s+" + DECIMAL_REGEX},
     {"right", "(right|rt)\\s+" + DECIMAL_REGEX},
     {"left", "(left|lt)\\s+" + DECIMAL_REGEX},
-    {"position", "(position|pos)(\\s+)?"},
-    {"penDown", "(pendown)(\\s+)?"},
-    {"penUp", "(penup)(\\s+)?"},
+    {"position", "(position|pos)\\s*"},
+    {"penDown", "(pendown)\\s*"},
+    {"penUp", "(penup)\\s*"},
+    {"penSize", "(pensize)\\s+" + DECIMAL_REGEX},
     {"color", "(color)\\s+(\\w+)"},
-    {"clear", "(clear)(\\s+)?"},
-    {"home", "(home)(\\s+)?"}};
+    {"clear", "(clear)\\s*"},
+    {"home", "(home)\\s*"}};
 
 CommandInterpreter::CommandInterpreter(Turtle &turtle) : _turtle(turtle) {}
 
@@ -66,6 +68,11 @@ void CommandInterpreter::Parse(QString command)
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penUp"))))
     {
         _cmd.reset(new PenUpCommand(_turtle));
+    }
+    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penSize"))))
+    {
+        double value = atof(match[2].str().c_str());
+        _cmd.reset(new PenSizeCommand(_turtle, value));
     }
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("color"))))
     {

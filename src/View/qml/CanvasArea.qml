@@ -35,7 +35,7 @@ Canvas {
 
   onPaint: {
     var ctx = getContext("2d");
-    ctx.lineWidth = 2;
+    ctx.lineWidth = cppCanvas.cppPenSize;
     ctx.strokeStyle = cppCanvas.cppPenColor
 
     ctx.beginPath ();
