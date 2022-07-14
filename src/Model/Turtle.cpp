@@ -2,13 +2,7 @@
 #include <cmath>
 
 Turtle::Turtle(CanvasData &canvas)
-    : _heading(M_PI / 2.),
-      _position(0, 0),
-      _penDown(true),
-      _penColor(PenColor::black),
-      _penSize(3),
-      _canvas(canvas),
-      _visible(true)
+    : _heading(M_PI / 2.), _position(0, 0), _canvas(canvas), _visible(true)
 {
 }
 

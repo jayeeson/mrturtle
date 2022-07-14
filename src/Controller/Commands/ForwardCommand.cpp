@@ -6,7 +6,7 @@ ForwardCommand::ForwardCommand(Turtle &turtle, double value) : _turtle(turtle), 
 
 void ForwardCommand::Execute()
 {
-    if (_turtle.IsPenDown())
+    if (_turtle.GetCanvas().IsPenDown())
     {
         const auto pos = _turtle.GetPosition();
         const auto heading = _turtle.GetHeading();

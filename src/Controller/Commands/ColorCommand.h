@@ -1,17 +1,18 @@
 #pragma once
 
 #include "AbstractCommand.h"
-#include <QPointF>
+#include <QString>
 
 class Turtle;
 
-class PositionCommand : public AbstractCommand
+class ColorCommand : public AbstractCommand
 {
    public:
-    PositionCommand(Turtle &turtle);
+    ColorCommand(Turtle &turtle, QString color);
 
     void Execute() override;
 
    private:
     Turtle &_turtle;
+    QString _color;
 };

@@ -3,4 +3,4 @@
 
 PenUpCommand::PenUpCommand(Turtle &turtle) : _turtle(turtle) {}
 
-void PenUpCommand::Execute() { _turtle.PenDown(false); }
+void PenUpCommand::Execute() { _turtle.GetCanvas().SetPenDown(false); }

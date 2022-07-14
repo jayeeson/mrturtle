@@ -1,6 +1,5 @@
 #pragma once
 
-#include "PenColor.h"
 #include "CanvasData.h"
 #include <QObject>
 #include <QPointF>
@@ -22,7 +21,6 @@ class Turtle : public QObject
     void RotateDeg(double angle);
     void SetHeading(double angle);
 
-    inline void PenDown(bool down);
     inline void SetVisible(bool visible);
     inline void SetPosition(const QPointF &position);
 
@@ -43,17 +41,13 @@ class Turtle : public QObject
    private:
     double _heading;  // value in radians
     QPointF _position;
-    bool _penDown;
-    PenColor _penColor;
-    double _penSize;
     bool _visible;
+
     CanvasData &_canvas;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-
-inline void Turtle::PenDown(bool down) { _penDown = down; }
 
 inline void Turtle::SetVisible(bool visible) { _visible = visible; }
 
@@ -82,7 +76,5 @@ inline double Turtle::GetHeading() { return _heading; }
 inline double Turtle::GetHeadingDeg() { return _heading * 180 / M_PI; }
 
 inline bool Turtle::IsVisible() { return _visible; }
-
-inline bool Turtle::IsPenDown() { return _penDown; }
 
 inline CanvasData &Turtle::GetCanvas() { return _canvas; }

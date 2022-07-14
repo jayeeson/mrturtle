@@ -7,7 +7,6 @@
 #include <memory>
 
 class Turtle;
-class CanvasData;
 
 class CommandInterpreter : public QObject
 {
@@ -15,7 +14,7 @@ class CommandInterpreter : public QObject
 
    public:
     CommandInterpreter() = delete;
-    CommandInterpreter(Turtle &turtle, CanvasData &canvas);
+    CommandInterpreter(Turtle &turtle);
 
     Q_INVOKABLE void Parse(QString command);
     Q_INVOKABLE bool Execute();
@@ -26,6 +25,5 @@ class CommandInterpreter : public QObject
    private:
     std::unique_ptr<AbstractCommand> _cmd;
     Turtle &_turtle;
-    CanvasData &_canvas;
     QObject *_mainQml;
 };

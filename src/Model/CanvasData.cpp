@@ -1,6 +1,16 @@
 #include "CanvasData.h"
 #include <QDebug>
 
+CanvasData::CanvasData()
+    : _canvasSize(),
+      _origCanvasSize(),
+      _maxCanvasSize(),
+      _penDown(true),
+      _penColor("black"),
+      _penSize(3)
+{
+}
+
 void CanvasData::SetCanvasSize(const QSize &size)
 {
     _canvasSize = size;

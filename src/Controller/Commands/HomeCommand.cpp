@@ -6,7 +6,7 @@ HomeCommand::HomeCommand(Turtle &turtle) : _turtle(turtle) {}
 
 void HomeCommand::Execute()
 {
-    if (_turtle.IsPenDown())
+    if (_turtle.GetCanvas().IsPenDown())
     {
         const auto pos = _turtle.GetPosition();
         const auto heading = _turtle.GetHeading();

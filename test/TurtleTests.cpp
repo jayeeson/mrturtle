@@ -157,22 +157,6 @@ TEST(TurtleTest, testGetSetHeading)
     EXPECT_EQ(turtle.GetHeading(), heading);
 }
 
-TEST(TurtleTest, testPenDown)
-{
-    CanvasData canvas;
-    Turtle turtle(canvas);
-    turtle.GetCanvas().SetCanvasSize(QSize(420, 69));
-
-    // pen down by default
-    EXPECT_EQ(turtle.IsPenDown(), true);
-
-    turtle.PenDown(false);
-    EXPECT_EQ(turtle.IsPenDown(), false);
-
-    turtle.PenDown(true);
-    EXPECT_EQ(turtle.IsPenDown(), true);
-}
-
 TEST(TurtleTest, testVisibility)
 {
     CanvasData canvas;

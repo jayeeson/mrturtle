@@ -85,3 +85,17 @@ TEST(CanvasDrawingTests, canvasDrawsTurtlePaths)
     EXPECT_NEAR(lines.at(1).x2(), canvas.GetCanvasSize().width() / 2. + 69, PRECISION);
     EXPECT_NEAR(lines.at(1).y2(), canvas.GetCanvasSize().height() / 2., PRECISION);
 }
+
+TEST(CanvasPainterTest, testPenDown)
+{
+    CanvasData canvas;
+
+    // pen down by default
+    EXPECT_EQ(canvas.IsPenDown(), true);
+
+    canvas.SetPenDown(false);
+    EXPECT_EQ(canvas.IsPenDown(), false);
+
+    canvas.SetPenDown(true);
+    EXPECT_EQ(canvas.IsPenDown(), true);
+}

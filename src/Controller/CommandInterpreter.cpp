@@ -6,9 +6,11 @@
 #include "PositionCommand.h"
 #include "PenDownCommand.h"
 #include "PenUpCommand.h"
+#include "ColorCommand.h"
 #include "ClearCommand.h"
 #include "HomeCommand.h"
-#include "CanvasData.h"
+#include "Turtle.h"
+#include <QString>
 #include <map>
 #include <regex>
 #include <iostream>
@@ -23,13 +25,11 @@ static const std::map<std::string, std::string> commandRegexes{
     {"position", "(position|pos)(\\s+)?"},
     {"penDown", "(pendown)(\\s+)?"},
     {"penUp", "(penup)(\\s+)?"},
+    {"color", "(color)\\s+(\\w+)"},
     {"clear", "(clear)(\\s+)?"},
     {"home", "(home)(\\s+)?"}};
 
-CommandInterpreter::CommandInterpreter(Turtle &turtle, CanvasData &canvas)
-    : _turtle(turtle), _canvas(canvas)
-{
-}
+CommandInterpreter::CommandInterpreter(Turtle &turtle) : _turtle(turtle) {}
 
 void CommandInterpreter::Parse(QString command)
 {
@@ -57,27 +57,27 @@ void CommandInterpreter::Parse(QString command)
     }
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("position"))))
     {
-        double value = atof(match[2].str().c_str());
-        _cmd.reset(new PositionCommand(_turtle, _canvas));
+        _cmd.reset(new PositionCommand(_turtle));
     }
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penDown"))))
     {
-        double value = atof(match[2].str().c_str());
         _cmd.reset(new PenDownCommand(_turtle));
     }
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penUp"))))
     {
-        double value = atof(match[2].str().c_str());
         _cmd.reset(new PenUpCommand(_turtle));
+    }
+    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("color"))))
+    {
+        QString value = match[2].str().c_str();
+        _cmd.reset(new ColorCommand(_turtle, value));
     }
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("clear"))))
     {
-        double value = atof(match[2].str().c_str());
-        _cmd.reset(new ClearCommand(_canvas));
+        _cmd.reset(new ClearCommand(_turtle.GetCanvas()));
     }
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("home"))))
     {
-        double value = atof(match[2].str().c_str());
         _cmd.reset(new HomeCommand(_turtle));
     }
 }

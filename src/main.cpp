@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     CanvasData canvas;
     Turtle turtle(canvas);
-    CommandInterpreter ci(turtle, canvas);
+    CommandInterpreter ci(turtle);
 
     engine.rootContext()->setContextProperty("cppCanvas", &canvas);
     engine.rootContext()->setContextProperty("cppTurtle", &turtle);

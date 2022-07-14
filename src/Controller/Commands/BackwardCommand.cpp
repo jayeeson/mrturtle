@@ -6,7 +6,7 @@ BackwardCommand::BackwardCommand(Turtle &turtle, double value) : _turtle(turtle)
 
 void BackwardCommand::Execute()
 {
-    if (_turtle.IsPenDown())
+    if (_turtle.GetCanvas().IsPenDown())
     {
         const auto pos = _turtle.GetPosition();
         const auto heading = _turtle.GetHeading();
