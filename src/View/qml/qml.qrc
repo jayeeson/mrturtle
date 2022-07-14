@@ -14,6 +14,7 @@
 
 <qresource prefix="/pics">
     <file alias="turtle.png">../Images/turtle.png</file>
+    <file alias="turtle.svg">../Images/turtle.svg</file>
 </qresource>
 
 </RCC>
