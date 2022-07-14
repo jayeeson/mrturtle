@@ -4,6 +4,7 @@ target_link_libraries(mrturtle PUBLIC types model view
 target_include_directories(mrturtle PUBLIC "${PROJECT_BINARY_DIR}"
   "${PROJECT_SOURCE_DIR}/src/Model"
   "${PROJECT_SOURCE_DIR}/src/View"
+  "${PROJECT_SOURCE_DIR}/src/Controller"
   "${PROJECT_SOURCE_DIR}/src/Controller/Commands"
   "${PROJECT_SOURCE_DIR}/src/Types")
 target_compile_options(mrturtle PUBLIC -Wconversion -Werror -Wall -Wextra)
