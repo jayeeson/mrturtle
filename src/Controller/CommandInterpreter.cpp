@@ -4,12 +4,14 @@
 #include "RightCommand.h"
 #include "LeftCommand.h"
 #include "PositionCommand.h"
+#include "SizeCommand.h"
 #include "PenDownCommand.h"
 #include "PenUpCommand.h"
 #include "PenSizeCommand.h"
 #include "ColorCommand.h"
 #include "ClearCommand.h"
 #include "HomeCommand.h"
+#include "UnknownCommand.h"
 #include "Turtle.h"
 #include <QString>
 #include <map>
@@ -24,6 +26,7 @@ static const std::map<std::string, std::string> commandRegexes{
     {"right", "(right|rt)\\s+" + DECIMAL_REGEX},
     {"left", "(left|lt)\\s+" + DECIMAL_REGEX},
     {"position", "(position|pos)\\s*"},
+    {"size", "(size)\\s*"},
     {"penDown", "(pendown)\\s*"},
     {"penUp", "(penup)\\s*"},
     {"penSize", "(pensize)\\s+" + DECIMAL_REGEX},
@@ -61,6 +64,10 @@ void CommandInterpreter::Parse(QString command)
     {
         _cmd.reset(new PositionCommand(_turtle));
     }
+    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("size"))))
+    {
+        _cmd.reset(new SizeCommand(_turtle.GetCanvas()));
+    }
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penDown"))))
     {
         _cmd.reset(new PenDownCommand(_turtle));
@@ -86,6 +93,10 @@ void CommandInterpreter::Parse(QString command)
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("home"))))
     {
         _cmd.reset(new HomeCommand(_turtle));
+    }
+    else
+    {
+        _cmd.reset(new UnknownCommand(_turtle.GetCanvas(), QString(commandStr.c_str())));
     }
 }
 

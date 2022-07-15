@@ -3,7 +3,6 @@
 #include <QObject>
 #include <QMetaObject>
 #include <QString>
-#include <iostream>
 
 PositionCommand::PositionCommand(Turtle &turtle) : _turtle(turtle) {}
 
