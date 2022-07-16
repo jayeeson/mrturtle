@@ -57,9 +57,12 @@ void Turtle::RotateDeg(double angle) { RotateRad(angle * M_PI / 180); }
 
 void Turtle::SetHeading(double angle)
 {
-    double newHeading = angle;
-    _heading = ClampAngleToUnitCircle(newHeading);
-    emit HeadingChanged();
+    if (_heading != angle)
+    {
+        double newHeading = angle;
+        _heading = ClampAngleToUnitCircle(newHeading);
+        emit HeadingChanged();
+    }
 }
 
 double Turtle::ClampAngleToUnitCircle(double angle)

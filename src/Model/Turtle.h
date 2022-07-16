@@ -10,6 +10,7 @@ class Turtle : public QObject
     Q_OBJECT
     Q_PROPERTY(QPointF position READ GetPosition NOTIFY PositionChanged)
     Q_PROPERTY(double heading READ GetHeadingDeg NOTIFY HeadingChanged)
+    Q_PROPERTY(bool visible READ IsVisible NOTIFY VisibleChanged)
 
    public:
     Turtle(CanvasData &canvas);
@@ -37,6 +38,7 @@ class Turtle : public QObject
    signals:
     void PositionChanged();
     void HeadingChanged();
+    void VisibleChanged();
 
    private:
     double _heading;  // value in radians
@@ -49,7 +51,14 @@ class Turtle : public QObject
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-inline void Turtle::SetVisible(bool visible) { _visible = visible; }
+inline void Turtle::SetVisible(bool visible)
+{
+    if (_visible != visible)
+    {
+        _visible = visible;
+    }
+    emit VisibleChanged();
+}
 
 inline void Turtle::SetPosition(const QPointF &position)
 {
@@ -60,8 +69,11 @@ inline void Turtle::SetPosition(const QPointF &position)
         std::cout << "error setting turtle position";
         return;
     }
-    _position = position;
-    emit PositionChanged();
+    if (_position != position)
+    {
+        _position = position;
+        emit PositionChanged();
+    }
 }
 
 inline QPointF Turtle::GetPosition()

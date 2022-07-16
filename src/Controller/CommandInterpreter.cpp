@@ -11,6 +11,8 @@
 #include "ColorCommand.h"
 #include "ClearCommand.h"
 #include "HomeCommand.h"
+#include "ShowCommand.h"
+#include "HideCommand.h"
 #include "UnknownCommand.h"
 #include "Turtle.h"
 #include <QString>
@@ -32,7 +34,9 @@ static const std::map<std::string, std::string> commandRegexes{
     {"penSize", "(pensize)\\s+" + DECIMAL_REGEX},
     {"color", "(color)\\s+(\\w+)"},
     {"clear", "(clear)\\s*"},
-    {"home", "(home)\\s*"}};
+    {"home", "(home)\\s*"},
+    {"show", "(show)\\s*"},
+    {"hide", "(hide)\\s*"}};
 
 CommandInterpreter::CommandInterpreter(Turtle &turtle) : _turtle(turtle) {}
 
@@ -93,6 +97,14 @@ void CommandInterpreter::Parse(QString command)
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("home"))))
     {
         _cmd.reset(new HomeCommand(_turtle));
+    }
+    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("show"))))
+    {
+        _cmd.reset(new ShowCommand(_turtle));
+    }
+    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("hide"))))
+    {
+        _cmd.reset(new HideCommand(_turtle));
     }
     else
     {
