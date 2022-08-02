@@ -25,14 +25,23 @@ ApplicationWindow {
 
     CanvasArea {
       id: canvas
+      onPositionChanged: {
+        if ( xPos >= 0 && yPos >= 0)
+        {
+          turtle.x = xPos + canvas.x - turtle.width / 2
+          turtle.y = yPos + canvas.y - turtle.height / 2
+        }
+      }
     }
 
     Turtle {
       id: turtle
+
     }
 
     CommandArea {
       id: commandArea
     }
+
   }
 }

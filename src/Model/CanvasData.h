@@ -57,7 +57,8 @@ class CanvasData : public QObject
     void PenColorChanged();
     void PenSizeChanged();
     void addLineToCommandHistoryPanel(QString line, QString color = "");
-    void drawPaths(QList<int> x1, QList<int> y1, QList<int> x2, QList<int> y2);
+    void drawPaths(QList<double> x1, QList<double> y1, QList<double> x2, QList<double> y2,
+                   QList<double> distance);
     void clearCanvas();
 
    private:

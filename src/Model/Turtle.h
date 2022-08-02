@@ -11,6 +11,7 @@ class Turtle : public QObject
     Q_PROPERTY(QPointF position READ GetPosition NOTIFY PositionChanged)
     Q_PROPERTY(double heading READ GetHeadingDeg NOTIFY HeadingChanged)
     Q_PROPERTY(bool visible READ IsVisible NOTIFY VisibleChanged)
+    Q_PROPERTY(int speed READ GetSpeed NOTIFY SpeedChanged)
 
    public:
     Turtle(CanvasData &canvas);
@@ -24,11 +25,13 @@ class Turtle : public QObject
 
     inline void SetVisible(bool visible);
     inline void SetPosition(const QPointF &position);
+    inline void SetSpeed(int speed);
 
     inline QPointF GetPosition();
     inline double GetHeading();
     inline double GetHeadingDeg();
     inline bool IsVisible();
+    inline int GetSpeed();
     inline bool IsPenDown();
 
     inline CanvasData &GetCanvas();
@@ -39,11 +42,13 @@ class Turtle : public QObject
     void PositionChanged();
     void HeadingChanged();
     void VisibleChanged();
+    void SpeedChanged();
 
    private:
     double _heading;  // value in radians
     QPointF _position;
     bool _visible;
+    int _speed;
 
     CanvasData &_canvas;
 };
@@ -65,7 +70,6 @@ inline void Turtle::SetPosition(const QPointF &position)
     if (abs(position.x() * 2) > _canvas.GetCanvasSize().width() ||
         abs(position.y() * 2) > _canvas.GetCanvasSize().height())
     {
-        // todo: log error
         std::cout << "error setting turtle position";
         return;
     }
@@ -76,17 +80,23 @@ inline void Turtle::SetPosition(const QPointF &position)
     }
 }
 
-inline QPointF Turtle::GetPosition()
-{
-    // std::cout << "position:" << QString::number(_position.x()).toStdString() << "," <<
-    // QString::number(_position.y()).toStdString() << std::endl;
-    return _position;
-}
+inline QPointF Turtle::GetPosition() { return _position; }
 
 inline double Turtle::GetHeading() { return _heading; }
 
 inline double Turtle::GetHeadingDeg() { return _heading * 180 / M_PI; }
 
 inline bool Turtle::IsVisible() { return _visible; }
+
+inline int Turtle::GetSpeed() { return _speed; }
+
+inline void Turtle::SetSpeed(int speed)
+{
+    if (_speed != speed)
+    {
+        _speed = speed;
+        emit SpeedChanged();
+    }
+}
 
 inline CanvasData &Turtle::GetCanvas() { return _canvas; }

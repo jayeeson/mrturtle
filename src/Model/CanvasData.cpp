@@ -38,20 +38,21 @@ void CanvasData::DoAddLineToCommandHistoryPanel(QString line, QString color)
 
 void CanvasData::DoDrawPaths(const QList<QLineF> &pathList)
 {
-    QList<int> startX;
-    QList<int> startY;
-    QList<int> endX;
-    QList<int> endY;
+    QList<double> startX;
+    QList<double> startY;
+    QList<double> endX;
+    QList<double> endY;
+    QList<double> distance;
 
-    for (auto it = pathList.begin(); it != pathList.end(); ++it)
+    for (auto line = pathList.begin(); line != pathList.end(); ++line)
     {
-        const auto &line = it->toLine();
-        startX.append(line.x1());
-        startY.append(line.y1());
-        endX.append(line.x2());
-        endY.append(line.y2());
+        startX.append(line->x1());
+        startY.append(line->y1());
+        endX.append(line->x2());
+        endY.append(line->y2());
+        distance.append(line->length());
     }
-    emit drawPaths(startX, startY, endX, endY);
+    emit drawPaths(startX, startY, endX, endY, distance);
 }
 
 void CanvasData::DoClearCanvas() { emit clearCanvas(); }

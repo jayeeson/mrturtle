@@ -6,8 +6,8 @@ Item {
   property var aspectRatio: 3/4
   height: 40
   width: height * aspectRatio
-  x: cppTurtle.position.x - width / 2 + canvas.x + canvas.width / 2
-  y: -cppTurtle.position.y - height / 2 + canvas.y + canvas.height / 2
+  x: -width / 2 + canvas.x + canvas.width / 2
+  y: -height / 2 + canvas.y + canvas.height / 2
   z: 2
 
   Image {
