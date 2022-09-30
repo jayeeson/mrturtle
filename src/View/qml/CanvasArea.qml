@@ -15,16 +15,17 @@ Canvas {
 
   property var drawPointX: -1
   property var drawPointY: -1
-  property var currentX: canvas.width / 2
-  property var currentY: canvas.height / 2
+  property var currentX: width / 2
+  property var currentY: height / 2
+  property var currentXTarget: -1
+  property var currentYTarget: -1
   property var prevDrawPointX: -1
   property var prevDrawPointY: -1
 
-  property bool partialLine: false
-  property bool drawState: true
-  property bool drawing: false
-  property var i: 0
+  property var precision: 1E-3
 
+  property var i: 0
+  
   width: mainRect.width - leftPanel.width
   height: mainRect.height - navMenu.height - commandArea.height + mainRect.border.width
   anchors.leftMargin: - leftPanel.border.width
@@ -35,122 +36,114 @@ Canvas {
 
   signal positionChanged(real xPos, real yPos)
 
-  transitions: Transition {
-    NumberAnimation {
-      id: animation
-      properties: "currentX, currentY"
-      duration: distanceList[i] > 0 ? distanceList[i]/(cppTurtle.speed / 100): 1
+  ParallelAnimation {
+    id: drawAnimation
+    NumberAnimation { target: mycanvas; property: "currentX"; to: currentXTarget;
+      duration: distanceList[i] > 0 ? distanceList[i]/(cppTurtle.speed / (10 * cppTurtle.defaultSpeed)): 10 }
+    NumberAnimation { target: mycanvas; property: "currentY"; to: currentYTarget;
+      duration: distanceList[i] > 0 ? distanceList[i]/(cppTurtle.speed / (10 * cppTurtle.defaultSpeed)): 10 }
+  }
+
+  Binding {
+    target: cppCanvas
+    property: "cppCanvasSize"
+    value: Qt.size(width, height)
+  }
+
+  Binding {
+    target: cppCanvas
+    property: "cppOrigCanvasSize"
+    value: Qt.size(originalWidth, originalHeight)
+  }
+
+  onPaint: {
+    var ctx = getContext("2d");
+    ctx.lineWidth = cppCanvas.cppPenSize;
+    ctx.strokeStyle = cppCanvas.cppPenColor
+
+    ctx.beginPath();
+    if (x1List.length > 0)
+    {
+      if (prevDrawPointX < 0 || prevDrawPointY < 0)
+      {
+        prevDrawPointX = x1List[i]
+        prevDrawPointY = y1List[i]
       }
-      onRunningChanged: onDrawLineComplete()
+      ctx.moveTo(prevDrawPointX, prevDrawPointY)
+      ctx.lineTo(currentX, currentY)
+      prevDrawPointX = currentX
+      prevDrawPointY = currentY
+
+      ctx.stroke()
     }
+    timerFps.start()
+  }
 
-    states: State {
-      when: drawState
-      PropertyChanges {
-        currentX: x2List[i]; currentY: y2List[i]; target: mycanvas
-        }
-      }
+  function onDrawLineComplete()
+  {
+    if (i + 1 >= x1List.length )
+    {
+      clearLists()
+      i = 0;
+    }
+    else
+    {
+      ++i
+      updateDrawPoints()
+      drawAnimation.start()
+    }
+  }
 
-      Binding {
-        target: cppCanvas
-        property: "cppCanvasSize"
-        value: Qt.size(width, height)
-      }
-
-      Binding {
-        target: cppCanvas
-        property: "cppOrigCanvasSize"
-        value: Qt.size(originalWidth, originalHeight)
-      }
-
-      onPaint: {
-        var ctx = getContext("2d");
-        ctx.lineWidth = cppCanvas.cppPenSize;
-        ctx.strokeStyle = cppCanvas.cppPenColor
-
-        ctx.beginPath();
-        if(x1List.length > 0)
-        {
-          if (prevDrawPointX < 0 || prevDrawPointY < 0)
-          {
-            prevDrawPointX = x1List[i]
-            prevDrawPointY = y1List[i]
-          }
-          ctx.moveTo(prevDrawPointX, prevDrawPointY)
-          ctx.lineTo(currentX, currentY)
-          prevDrawPointX = currentX
-          prevDrawPointY = currentY
-
-          ctx.stroke()
-        }
-      }
-
-      onCurrentXChanged: {
-        requestPaint()
-        positionChanged(currentX, currentY)
-      }
-
-      onCurrentYChanged: {
-        requestPaint()
-        positionChanged(currentX, currentY)
-      }
-
-      function onDrawLineComplete()
-      {
-        if (drawing && currentX === x2List[i] && currentY === y2List[i])
-        {
-          ++i
-          if(i >= x1List.length )
-          {
-            clearLists()
-            i = 0;
-            drawing = false
-          }
-          else
-          {
-            updateDrawPoints()
-          }
-        }
-      }
-
-      function updateDrawPoints()
-      {
-        currentX = x1List[i]
-        currentY = y1List[i]
-        prevDrawPointX = -1
-        prevDrawPointY = -1
-        drawState = !drawState
-        drawState = !drawState
-      }
-
-      function clearLists()
-      {
-        x1List = 0
-        y1List = 0
-        x2List = 0
-        y2List = 0
-        distanceList = 0
-      }
-
-
-
-      Connections {
-        target: cppCanvas
-        onDrawPaths: {
-          i = 0
-          mycanvas.x1List = x1
-          mycanvas.y1List = y1
-          mycanvas.x2List = x2
-          mycanvas.y2List = y2
-          mycanvas.distanceList = distance
-
-          drawing = true
-          updateDrawPoints()
-        }
-        onClearCanvas: {
-          var ctx = getContext("2d");
-          ctx.clearRect(0, 0, cppCanvas.cppMaxCanvasSize.width, cppCanvas.cppMaxCanvasSize.height)
-          mycanvas.requestPaint();
-        }
+  Timer {
+    id: timerFps
+    interval: 16
+    onTriggered: mycanvas.requestPaint()
+    onRunningChanged: {
+      positionChanged(currentX, currentY)
+      if (Math.abs(prevDrawPointX - x2List[i]) < precision && Math.abs(prevDrawPointY - y2List[i]) < precision) {
+        onDrawLineComplete()
       }
     }
+  }
+
+  function updateDrawPoints()
+  {
+    currentX = x1List[i]
+    currentY = y1List[i]
+    currentXTarget = x2List[i]
+    currentYTarget = y2List[i]
+    prevDrawPointX = -1
+    prevDrawPointY = -1
+  }
+
+  function clearLists()
+  {
+    x1List = 0
+    y1List = 0
+    x2List = 0
+    y2List = 0
+    distanceList = 0
+  }
+
+  Connections {
+    target: cppCanvas
+    onDrawPaths: {
+      mycanvas.x1List = x1
+      mycanvas.y1List = y1
+      mycanvas.x2List = x2
+      mycanvas.y2List = y2
+      mycanvas.distanceList = distance
+
+      i = 0
+      currentXTarget = x2List[i]
+      currentYTarget = y2List[i]
+      drawAnimation.start()
+      updateDrawPoints()
+    }
+    onClearCanvas: {
+      var ctx = getContext("2d");
+      ctx.clearRect(0, 0, cppCanvas.cppMaxCanvasSize.width, cppCanvas.cppMaxCanvasSize.height)
+      mycanvas.requestPaint();
+    }
+  }
+}

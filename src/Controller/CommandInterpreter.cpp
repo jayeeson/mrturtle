@@ -5,6 +5,7 @@
 #include "LeftCommand.h"
 #include "PositionCommand.h"
 #include "SizeCommand.h"
+#include "SpeedCommand.h"
 #include "PenDownCommand.h"
 #include "PenUpCommand.h"
 #include "PenSizeCommand.h"
@@ -29,6 +30,7 @@ static const std::map<std::string, std::string> commandRegexes{
     {"left", "(left|lt)\\s+" + DECIMAL_REGEX},
     {"position", "(position|pos)\\s*"},
     {"size", "(size)\\s*"},
+    {"speed", "(speed)\\s*" + DECIMAL_REGEX + "?"},
     {"penDown", "(pendown)\\s*"},
     {"penUp", "(penup)\\s*"},
     {"penSize", "(pensize)\\s+" + DECIMAL_REGEX},
@@ -71,6 +73,18 @@ void CommandInterpreter::Parse(QString command)
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("size"))))
     {
         _cmd.reset(new SizeCommand(_turtle.GetCanvas()));
+    }
+    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("speed"))))
+    {
+        if (match[2].matched)
+        {
+            double value = atof(match[2].str().c_str());
+            _cmd.reset(new SpeedCommand(_turtle, value));
+        }
+        else
+        {
+            _cmd.reset(new SpeedCommand(_turtle));
+        }
     }
     else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penDown"))))
     {

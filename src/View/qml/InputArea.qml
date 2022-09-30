@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.11
 
 Rectangle {
-  id: inputAreaRect
+  id: root
   property var commandHistory: []
   width: parent.width - commandAreaBackground.border.width * 2 - 6
   height: textInput.height + 10
@@ -20,10 +20,10 @@ Rectangle {
     id: textInput
     property var inHistoryMode: false
     property var historyModeActiveIndex: 0
-    property var ignoreTextChange: false
+    property var ignoreInput: false
     property var maxHeight: commandAreaBackground.height - 16 - commandAreaBackground.border.width * 2
     property var startingText: "Enter some commands here..."
-    width: inputAreaRect.width - 24
+    width: root.width - 24
     height: contentHeight > maxHeight ? maxHeight: contentHeight
     text: startingText
     color: "#444444"
@@ -34,9 +34,9 @@ Rectangle {
     clip: true
 
     onTextChanged: {
-      if (ignoreTextChange)
+      if (ignoreInput)
       {
-        ignoreTextChange = false;
+        ignoreInput = false;
       }
       else if (inHistoryMode)
       {
@@ -60,14 +60,14 @@ Rectangle {
     onAccepted: {
       if ( text !== "")
       {
-        if (inputAreaRect.commandHistory[inputAreaRect.commandHistory.length - 1] != text)
+        if (root.commandHistory[root.commandHistory.length - 1] != text)
         {
-          inputAreaRect.commandHistory.push(text)
+          root.commandHistory.push(text)
         }
         commandHistoryScroller.model.append({line: text, textColor: "black"});
         commandHistoryScroller.contentX = 0
         commandHistoryScroller.positionViewAtEnd()
-        ignoreTextChange = true;
+        ignoreInput = true;
 
         cppCommand.Parse(text);
         cppCommand.Execute();
@@ -83,21 +83,24 @@ Rectangle {
         {
           if (text === "")
           {
-            historyModeActiveIndex = inputAreaRect.commandHistory.length;
+            historyModeActiveIndex = root.commandHistory.length;
           }
           historyModeActiveIndex -= historyModeActiveIndex > 0 ? 1: 0;
-          ignoreTextChange = true;
-          text = inputAreaRect.commandHistory[historyModeActiveIndex];
-          inHistoryMode = true;
+          ignoreInput = true;
+          if (root.commandHistory.length > 0)
+          {
+            text = root.commandHistory[historyModeActiveIndex];
+            inHistoryMode = true;
+          }
         }
       }
       else if (event.key == Qt.Key_Down && inHistoryMode)
       {
-        ignoreTextChange = true;
-        if (historyModeActiveIndex < inputAreaRect.commandHistory.length - 1)
+        ignoreInput = true;
+        if (historyModeActiveIndex < root.commandHistory.length - 1)
         {
           historyModeActiveIndex += 1;
-          text = inputAreaRect.commandHistory[historyModeActiveIndex];
+          text = root.commandHistory[historyModeActiveIndex];
         }
         else
         {

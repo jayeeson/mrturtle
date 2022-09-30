@@ -1,10 +1,15 @@
 #include "Turtle.h"
 #include <cmath>
 
-static int DEFAULT_SPEED = 10;
+static double DEFAULT_SPEED = 100.;
 
 Turtle::Turtle(CanvasData &canvas)
-    : _heading(M_PI / 2.), _position(0, 0), _canvas(canvas), _visible(true), _speed(DEFAULT_SPEED)
+    : _heading(M_PI / 2.),
+      _position(0, 0),
+      _canvas(canvas),
+      _visible(true),
+      _speed(DEFAULT_SPEED),
+      _defaultSpeed(DEFAULT_SPEED)
 {
 }
 
