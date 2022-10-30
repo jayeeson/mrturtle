@@ -67,14 +67,15 @@ QList<QLineF> CanvasData::GetTurtlePath(const QPointF &pos, double heading, doub
     // and decrease its length by distance moved.
     // 3. repeat step 2 until finished.
 
-    QList<QLineF> list;
+    QList<QLineF> list{};
     const double qtCoordinateOffsetX = _canvasSize.width() / 2.;
 
     const double qtCoordinateOffsetY = _canvasSize.height() / 2.;
 
-    QLineF edge1;  // always most clockwise edge
-    QLineF edge2;  // always most counter-clockwise edge
+    QLineF edge1{};  // always most clockwise edge
+    QLineF edge2{};  // always most counter-clockwise edge
     GetCanvasBordersThatCouldIntersect(heading, edge1, edge2);
+    // todo: use fuzzy compare
     const bool edge2IsUnset =
         edge2.p1().x() == 0 && edge2.p1().y() == 0 && edge2.p2().x() == 0 && edge2.p2().y() == 0;
     const int numEdges = edge2IsUnset ? 1 : 2;
@@ -84,7 +85,7 @@ QList<QLineF> CanvasData::GetTurtlePath(const QPointF &pos, double heading, doub
     QPointF end{start.x() + distance * cos(heading), start.y() - distance * sin(heading)};
     QLineF line{start, end};
 
-    QPointF intersectionPoint;
+    QPointF intersectionPoint{};
     QLineF *intersected = nullptr;
     do
     {

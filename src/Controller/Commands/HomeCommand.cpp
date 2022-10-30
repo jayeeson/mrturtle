@@ -19,3 +19,5 @@ void HomeCommand::Execute()
     _turtle.SetPosition(QPoint(0, 0));
     _turtle.SetHeading(M_PI / 2);
 }
+
+bool HomeCommand::InstaExecution() { return false; }

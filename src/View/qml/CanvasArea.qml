@@ -85,6 +85,7 @@ Canvas {
     {
       clearLists()
       i = 0;
+      cppCommand.NotifyRunStopped()
     }
     else
     {

@@ -10,6 +10,7 @@ class HomeCommand : public AbstractCommand
     HomeCommand(Turtle &turtle);
 
     void Execute() override;
+    virtual bool InstaExecution() override;
 
    private:
     Turtle &_turtle;

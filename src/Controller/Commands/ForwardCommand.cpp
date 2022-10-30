@@ -17,3 +17,5 @@ void ForwardCommand::Execute()
 
     _turtle.Forward(_value);
 }
+
+bool ForwardCommand::InstaExecution() { return false; }

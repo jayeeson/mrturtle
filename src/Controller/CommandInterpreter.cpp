@@ -38,43 +38,44 @@ static const std::map<std::string, std::string> commandRegexes{
     {"clear", "(clear)\\s*"},
     {"home", "(home)\\s*"},
     {"show", "(show)\\s*"},
-    {"hide", "(hide)\\s*"}};
+    {"hide", "(hide)\\s*"}
+    // 15
+};
 
 CommandInterpreter::CommandInterpreter(Turtle &turtle) : _turtle(turtle) {}
 
-void CommandInterpreter::Parse(QString command)
+bool CommandInterpreter::Parse(std::string command)
 {
     std::smatch match;
-    auto commandStr = command.toStdString();
-    if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("forward"))))
+    if (std::regex_match(command, match, std::regex(commandRegexes.at("forward"))))
     {
         double value = atof(match[2].str().c_str());
         _cmd.reset(new ForwardCommand(_turtle, value));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("backward"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("backward"))))
     {
         double value = atof(match[2].str().c_str());
         _cmd.reset(new BackwardCommand(_turtle, value));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("right"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("right"))))
     {
         double value = atof(match[2].str().c_str());
         _cmd.reset(new RightCommand(_turtle, value));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("left"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("left"))))
     {
         double value = atof(match[2].str().c_str());
         _cmd.reset(new LeftCommand(_turtle, value));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("position"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("position"))))
     {
         _cmd.reset(new PositionCommand(_turtle));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("size"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("size"))))
     {
         _cmd.reset(new SizeCommand(_turtle.GetCanvas()));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("speed"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("speed"))))
     {
         if (match[2].matched)
         {
@@ -86,44 +87,45 @@ void CommandInterpreter::Parse(QString command)
             _cmd.reset(new SpeedCommand(_turtle));
         }
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penDown"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("penDown"))))
     {
         _cmd.reset(new PenDownCommand(_turtle));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penUp"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("penUp"))))
     {
         _cmd.reset(new PenUpCommand(_turtle));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("penSize"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("penSize"))))
     {
         double value = atof(match[2].str().c_str());
         _cmd.reset(new PenSizeCommand(_turtle, value));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("color"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("color"))))
     {
         QString value = match[2].str().c_str();
         _cmd.reset(new ColorCommand(_turtle, value));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("clear"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("clear"))))
     {
         _cmd.reset(new ClearCommand(_turtle.GetCanvas()));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("home"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("home"))))
     {
         _cmd.reset(new HomeCommand(_turtle));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("show"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("show"))))
     {
         _cmd.reset(new ShowCommand(_turtle));
     }
-    else if (std::regex_match(commandStr, match, std::regex(commandRegexes.at("hide"))))
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("hide"))))
     {
         _cmd.reset(new HideCommand(_turtle));
     }
     else
     {
-        _cmd.reset(new UnknownCommand(_turtle.GetCanvas(), QString(commandStr.c_str())));
+        _cmd.reset(new UnknownCommand(_turtle.GetCanvas(), command));
     }
+    return !_cmd->InstaExecution();
 }
 
 bool CommandInterpreter::Execute()

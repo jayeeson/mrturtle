@@ -1,29 +1,26 @@
 #pragma once
 
 #include "AbstractCommand.h"
-#include <QObject>
 #include <QString>
 #include <string>
 #include <memory>
 
 class Turtle;
 
-class CommandInterpreter : public QObject
+class CommandInterpreter
 {
-    Q_OBJECT
-
    public:
     CommandInterpreter() = delete;
+    CommandInterpreter(const CommandInterpreter &) = delete;
+    CommandInterpreter &operator=(CommandInterpreter &) = delete;
+    virtual ~CommandInterpreter() = default;
     CommandInterpreter(Turtle &turtle);
 
-    Q_INVOKABLE void Parse(QString command);
-    Q_INVOKABLE bool Execute();
-
-   signals:
-    void AddLineToCommandLog(QString str);
+    // returns true if it takes time to draw
+    bool Parse(std::string command);
+    bool Execute();
 
    private:
     std::unique_ptr<AbstractCommand> _cmd;
     Turtle &_turtle;
-    QObject *_mainQml;
 };

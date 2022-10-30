@@ -17,3 +17,5 @@ void BackwardCommand::Execute()
     }
     _turtle.Backward(_value);
 }
+
+bool BackwardCommand::InstaExecution() { return false; }

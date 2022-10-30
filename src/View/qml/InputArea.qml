@@ -69,8 +69,7 @@ Rectangle {
         commandHistoryScroller.positionViewAtEnd()
         ignoreInput = true;
 
-        cppCommand.Parse(text);
-        cppCommand.Execute();
+        cppCommand.Enqueue(text);
 
         text = "";
       }

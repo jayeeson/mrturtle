@@ -1,19 +1,18 @@
 #pragma once
 
 #include "AbstractCommand.h"
-#include <QPointF>
-#include <QString>
+#include <string>
 
 class CanvasData;
 
 class UnknownCommand : public AbstractCommand
 {
    public:
-    UnknownCommand(CanvasData &canvas, QString input);
+    UnknownCommand(CanvasData &canvas, std::string input);
 
     void Execute() override;
 
    private:
     CanvasData &_canvas;
-    QString _input;
+    std::string _input;
 };

@@ -1,6 +1,2 @@
-QML tutorial
-set order - elements drawn later are on top
-order of qml properties doesn't matter. 
-
 todo:
-  - allow command inputs to be queued so drawing can complete.
+  - (DONE) allow command inputs to be queued so drawing can complete.
