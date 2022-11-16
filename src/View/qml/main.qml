@@ -36,7 +36,6 @@ ApplicationWindow {
 
     Turtle {
       id: turtle
-
     }
 
     CommandArea {

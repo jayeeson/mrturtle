@@ -126,8 +126,8 @@ QList<QLineF> CanvasData::GetTurtlePath(const QPointF &pos, double heading, doub
         }
         else
         {
-            qDebug() << "line: " << line;
-            qDebug() << "intersected: " << *intersected;
+            qDebug() << "Error in canvasData::GetTurtlePath\r\n"
+                     << "line: " << line << "\r\nintersected: " << *intersected;
         }
         line.setLength(line.length() - newLine.length());
 

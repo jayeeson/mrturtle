@@ -15,7 +15,8 @@ void HomeCommand::Execute()
 
         _turtle.GetCanvas().DoDrawPaths(pathList);
     }
-
+    // todo: 1) set heading to origin, 2) set positioin to origin, 3) set heading to default.
+    // will look cooler in the animations...
     _turtle.SetPosition(QPoint(0, 0));
     _turtle.SetHeading(M_PI / 2);
 }

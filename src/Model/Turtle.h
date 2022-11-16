@@ -46,6 +46,7 @@ class Turtle : public QObject
     void VisibleChanged();
     void SpeedChanged();
     void DefaultSpeedChanged();
+    void doRotate(double angle);
 
    public:
     double _defaultSpeed;

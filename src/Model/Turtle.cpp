@@ -3,6 +3,11 @@
 
 static double DEFAULT_SPEED = 100.;
 
+static double RadToDeg() { return 180 / M_PI; };
+static double RadToDeg(double angle) { return angle * RadToDeg(); };
+static double DegToRad() { return M_PI / 180; };
+static double DegToRad(double angle) { return angle * DegToRad(); };
+
 Turtle::Turtle(CanvasData &canvas)
     : _heading(M_PI / 2.),
       _position(0, 0),
@@ -55,20 +60,22 @@ void Turtle::Backward(double distance) { Forward(distance, true); }
 
 void Turtle::RotateRad(double angle)
 {
-    _heading += angle;
-    _heading = ClampAngleToUnitCircle(_heading);
+    _heading = ClampAngleToUnitCircle(_heading + angle);
+    emit doRotate(RadToDeg(angle));
     emit HeadingChanged();
 }
 
-void Turtle::RotateDeg(double angle) { RotateRad(angle * M_PI / 180); }
+void Turtle::RotateDeg(double angle) { RotateRad(DegToRad(angle)); }
 
 void Turtle::SetHeading(double angle)
 {
     if (_heading != angle)
     {
-        double newHeading = angle;
-        _heading = ClampAngleToUnitCircle(newHeading);
+        double newHeading = ClampAngleToUnitCircle(angle);
+        double diff = newHeading - _heading;
+        _heading = newHeading;
         emit HeadingChanged();
+        emit doRotate(RadToDeg(diff));
     }
 }
 

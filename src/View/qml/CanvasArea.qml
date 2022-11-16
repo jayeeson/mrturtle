@@ -86,6 +86,7 @@ Canvas {
       clearLists()
       i = 0;
       cppCommand.NotifyRunStopped()
+      timerFps.stop();
     }
     else
     {
@@ -140,6 +141,7 @@ Canvas {
       currentYTarget = y2List[i]
       drawAnimation.start()
       updateDrawPoints()
+      mycanvas.requestPaint();
     }
     onClearCanvas: {
       var ctx = getContext("2d");
