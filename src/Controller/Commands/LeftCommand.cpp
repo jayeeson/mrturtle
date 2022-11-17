@@ -9,7 +9,7 @@ bool LeftCommand::Execute()
 {
     if (IsValid())
     {
-        _turtle.RotateDeg(_deg);
+        _turtle.RotateDeg(-_deg);
         return true;
     }
     return false;
