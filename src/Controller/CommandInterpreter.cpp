@@ -1,8 +1,10 @@
 #include "CommandInterpreter.h"
+#include "CommandExecutor.h"
 #include "ForwardCommand.h"
 #include "BackwardCommand.h"
 #include "RightCommand.h"
 #include "LeftCommand.h"
+#include "SetHeadingCommand.h"
 #include "PositionCommand.h"
 #include "SizeCommand.h"
 #include "SpeedCommand.h"
@@ -28,6 +30,7 @@ static const std::map<std::string, std::string> commandRegexes{
     {"backward", "(backward|bk)\\s+" + DECIMAL_REGEX},
     {"right", "(right|rt)\\s+" + DECIMAL_REGEX},
     {"left", "(left|lt)\\s+" + DECIMAL_REGEX},
+    {"setHeading", "(seth)\\s+-?" + DECIMAL_REGEX},
     {"position", "(position|pos)\\s*"},
     {"size", "(size)\\s*"},
     {"speed", "(speed)\\s*" + DECIMAL_REGEX + "?"},
@@ -42,7 +45,10 @@ static const std::map<std::string, std::string> commandRegexes{
     // 15
 };
 
-CommandInterpreter::CommandInterpreter(Turtle &turtle) : _turtle(turtle) {}
+CommandInterpreter::CommandInterpreter(Turtle &turtle, CommandExecutor &executor)
+    : _turtle(turtle), _executor(executor)
+{
+}
 
 bool CommandInterpreter::Parse(std::string command)
 {
@@ -66,6 +72,11 @@ bool CommandInterpreter::Parse(std::string command)
     {
         double value = atof(match[2].str().c_str());
         _cmd.reset(new LeftCommand(_turtle, value));
+    }
+    else if (std::regex_match(command, match, std::regex(commandRegexes.at("setHeading"))))
+    {
+        double value = atof(match[2].str().c_str());
+        _cmd.reset(new SetHeadingCommand(_turtle, value));
     }
     else if (std::regex_match(command, match, std::regex(commandRegexes.at("position"))))
     {
@@ -132,9 +143,21 @@ bool CommandInterpreter::Execute()
 {
     if (_cmd != nullptr)
     {
-        _cmd->Execute();
+        bool success = _cmd->Execute();
+        if (!success)
+        {
+            HandleInvalidCommand();
+        }
         _cmd.reset(nullptr);
         return true;
     }
     return false;
+}
+
+void CommandInterpreter::HandleInvalidCommand()
+{
+    if (!_cmd->InstaExecution())
+    {
+        emit _executor.NotifyRunStopped();
+    }
 }

@@ -10,7 +10,7 @@ class SizeCommand : public AbstractCommand
    public:
     SizeCommand(CanvasData &canvas);
 
-    void Execute() override;
+    bool Execute() override;
 
    private:
     CanvasData &_canvas;

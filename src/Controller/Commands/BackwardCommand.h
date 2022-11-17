@@ -9,8 +9,10 @@ class BackwardCommand : public AbstractCommand
    public:
     BackwardCommand(Turtle &turtle, double value);
 
-    void Execute() override;
+    bool Execute() override;
     virtual bool InstaExecution() override;
+
+    bool IsValid();
 
    private:
     double _value;

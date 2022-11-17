@@ -3,4 +3,8 @@
 
 ShowCommand::ShowCommand(Turtle &turtle) : _turtle(turtle) {}
 
-void ShowCommand::Execute() { _turtle.SetVisible(true); }
+bool ShowCommand::Execute()
+{
+    _turtle.SetVisible(true);
+    return true;
+}

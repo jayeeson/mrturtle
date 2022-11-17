@@ -9,7 +9,7 @@ class PenSizeCommand : public AbstractCommand
    public:
     PenSizeCommand(Turtle &turtle, double size);
 
-    void Execute() override;
+    bool Execute() override;
 
    private:
     Turtle &_turtle;

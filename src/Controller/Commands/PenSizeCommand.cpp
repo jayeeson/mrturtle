@@ -3,4 +3,8 @@
 
 PenSizeCommand::PenSizeCommand(Turtle &turtle, double size) : _turtle(turtle), _size(size) {}
 
-void PenSizeCommand::Execute() { _turtle.GetCanvas().SetPenSize(_size); }
+bool PenSizeCommand::Execute()
+{
+    _turtle.GetCanvas().SetPenSize(_size);
+    return true;
+}

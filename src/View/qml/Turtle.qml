@@ -30,7 +30,11 @@ Item {
     to: endAngle;
     duration: rotationTime;
 
-    onFinished: turtle.onRotateCompleted()
+    onFinished: {
+      turtle.onRotateCompleted()
+      // should be the same but best to just explicitly assign to backend heading
+      turtleAngle = -cppTurtle.heading + 90
+    }
   }
 
   Image {
@@ -60,7 +64,7 @@ Item {
     target: cppTurtle
     onDoRotate: (angle) => {
       startAngle = turtleAngle;
-      endAngle = startAngle - angle; // angle is negative ? 
+      endAngle = startAngle + angle;
       rotationTime = turtle.getRotationTime()
       anim.start()
     }

@@ -8,8 +8,9 @@ UnknownCommand::UnknownCommand(CanvasData &canvas, std::string input)
 {
 }
 
-void UnknownCommand::Execute()
+bool UnknownCommand::Execute()
 {
     QString str = "Unknown command: " + QString{_input.c_str()};
     _canvas.DoAddLineToCommandHistoryPanel(str, "darkred");
+    return true;
 }

@@ -11,7 +11,7 @@ class SpeedCommand : public AbstractCommand
     SpeedCommand(Turtle &turtle, double speed);
     SpeedCommand(Turtle &turtle);
 
-    void Execute() override;
+    bool Execute() override;
     bool Validate();
 
    private:

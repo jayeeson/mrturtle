@@ -9,7 +9,7 @@ class ShowCommand : public AbstractCommand
    public:
     ShowCommand(Turtle &turtle);
 
-    void Execute() override;
+    bool Execute() override;
 
    private:
     Turtle &_turtle;

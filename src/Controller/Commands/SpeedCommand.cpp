@@ -11,17 +11,20 @@ SpeedCommand::SpeedCommand(Turtle &turtle, double speed)
 
 SpeedCommand::SpeedCommand(Turtle &turtle) : _turtle(turtle), _speed(0.), _gettingSpeed(true) {}
 
-void SpeedCommand::Execute()
+bool SpeedCommand::Execute()
 {
     if (_gettingSpeed)
     {
         QString str = QString("Current speed: %1").arg(_turtle.GetSpeed());
         _turtle.GetCanvas().DoAddLineToCommandHistoryPanel(str, "#084808");  // dark darkgreen
+        return true;
     }
     else if (Validate())
     {
         _turtle.SetSpeed(_speed);
+        return true;
     }
+    return false;
 }
 
 bool SpeedCommand::Validate()

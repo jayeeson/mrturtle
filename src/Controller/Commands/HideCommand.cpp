@@ -3,4 +3,8 @@
 
 HideCommand::HideCommand(Turtle &turtle) : _turtle(turtle) {}
 
-void HideCommand::Execute() { _turtle.SetVisible(false); }
+bool HideCommand::Execute()
+{
+    _turtle.SetVisible(false);
+    return true;
+}

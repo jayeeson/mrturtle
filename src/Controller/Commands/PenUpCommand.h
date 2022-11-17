@@ -9,7 +9,7 @@ class PenUpCommand : public AbstractCommand
    public:
     PenUpCommand(Turtle &turtle);
 
-    void Execute() override;
+    bool Execute() override;
 
    private:
     Turtle &_turtle;

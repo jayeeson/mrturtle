@@ -1,12 +1,8 @@
 #include "Turtle.h"
+#include "Math.h"
 #include <cmath>
 
-static double DEFAULT_SPEED = 100.;
-
-static double RadToDeg() { return 180 / M_PI; };
-static double RadToDeg(double angle) { return angle * RadToDeg(); };
-static double DegToRad() { return M_PI / 180; };
-static double DegToRad(double angle) { return angle * DegToRad(); };
+static double DEFAULT_SPEED{100.};
 
 Turtle::Turtle(CanvasData &canvas)
     : _heading(M_PI / 2.),
@@ -60,22 +56,23 @@ void Turtle::Backward(double distance) { Forward(distance, true); }
 
 void Turtle::RotateRad(double angle)
 {
-    _heading = ClampAngleToUnitCircle(_heading + angle);
-    emit doRotate(RadToDeg(angle));
+    _heading = ClampAngleToUnitCircle(_heading - angle);
+    emit doRotate(Math::RadToDeg(angle));
     emit HeadingChanged();
 }
 
-void Turtle::RotateDeg(double angle) { RotateRad(DegToRad(angle)); }
+void Turtle::RotateDeg(double angle) { RotateRad(Math::DegToRad(angle)); }
 
 void Turtle::SetHeading(double angle)
 {
-    if (_heading != angle)
+    if (!Math::IsEqual(_heading, angle))
     {
         double newHeading = ClampAngleToUnitCircle(angle);
         double diff = newHeading - _heading;
+        double quickDiff = diff > M_PI ? diff - (2 * M_PI) : diff;
         _heading = newHeading;
         emit HeadingChanged();
-        emit doRotate(RadToDeg(diff));
+        emit doRotate(Math::RadToDeg(-quickDiff));
     }
 }
 

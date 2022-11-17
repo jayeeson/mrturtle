@@ -10,7 +10,7 @@ class ColorCommand : public AbstractCommand
    public:
     ColorCommand(Turtle &turtle, QString color);
 
-    void Execute() override;
+    bool Execute() override;
 
    private:
     Turtle &_turtle;

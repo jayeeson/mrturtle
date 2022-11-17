@@ -10,7 +10,7 @@ class UnknownCommand : public AbstractCommand
    public:
     UnknownCommand(CanvasData &canvas, std::string input);
 
-    void Execute() override;
+    bool Execute() override;
 
    private:
     CanvasData &_canvas;

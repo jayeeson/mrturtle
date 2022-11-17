@@ -6,10 +6,11 @@
 
 SizeCommand::SizeCommand(CanvasData &canvas) : _canvas(canvas) {}
 
-void SizeCommand::Execute()
+bool SizeCommand::Execute()
 {
     QSizeF size = _canvas.GetCanvasSize();
     QString str =
         "size (" + QString::number(size.width()) + "," + QString::number(size.height()) + ")";
     _canvas.DoAddLineToCommandHistoryPanel(str, "blue");
+    return true;
 }

@@ -3,4 +3,8 @@
 
 ColorCommand::ColorCommand(Turtle &turtle, QString color) : _turtle(turtle), _color(color) {}
 
-void ColorCommand::Execute() { _turtle.GetCanvas().SetPenColor(_color); }
+bool ColorCommand::Execute()
+{
+    _turtle.GetCanvas().SetPenColor(_color);
+    return true;
+}

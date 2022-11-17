@@ -1,6 +1,6 @@
 #include "CommandExecutor.h"
 
-CommandExecutor::CommandExecutor(Turtle &turtle) : _man(turtle)
+CommandExecutor::CommandExecutor(Turtle &turtle) : _man(turtle, *this)
 {
     QObject::connect(this, &CommandExecutor::NotifyRunStopped,
                      &CommandExecutor::onNotifyRunStopped);
@@ -17,7 +17,7 @@ void CommandExecutor::Enqueue(QString command)
         _man.Execute();
         if (!takesTime)
         {
-            emit onNotifyRunStopped();
+            emit NotifyRunStopped();
         }
     }
     else

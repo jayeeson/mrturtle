@@ -9,8 +9,10 @@ class LeftCommand : public AbstractCommand
    public:
     LeftCommand(Turtle &turtle, double deg);
 
-    void Execute() override;
+    bool Execute() override;
     virtual bool InstaExecution() override;
+
+    bool IsValid();
 
    private:
     double _deg;
