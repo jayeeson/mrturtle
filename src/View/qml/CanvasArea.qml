@@ -79,6 +79,13 @@ Canvas {
     timerFps.start()
   }
 
+  onPainted: {
+    // stop infinite paint on launch
+    if( x1List.length == 0) {
+      timerFps.stop();
+    }
+  }
+
   function onDrawLineComplete()
   {
     if (i + 1 >= x1List.length )
@@ -139,8 +146,8 @@ Canvas {
       i = 0
       currentXTarget = x2List[i]
       currentYTarget = y2List[i]
-      drawAnimation.start()
       updateDrawPoints()
+      drawAnimation.start()
       mycanvas.requestPaint();
     }
     onClearCanvas: {
