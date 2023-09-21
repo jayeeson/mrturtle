@@ -3,9 +3,8 @@
 #include <cmath>
 #include <exception>
 
-class Math
+namespace Math
 {
-   public:
     static double RadToDeg() { return 180 / M_PI; };
     static double RadToDeg(double angle) { return angle * RadToDeg(); };
     static double DegToRad() { return M_PI / 180; };
@@ -18,7 +17,7 @@ class Math
 
     static double SetPrecision(double value, int decimals = 1)
     {
-        if (decimals > 0)
+        if (decimals >= 0)
         {
             int factor = std::pow(10, decimals);
             return std::round(value * factor) / factor;
@@ -26,6 +25,16 @@ class Math
         throw std::invalid_argument("Can't have negative decimals");
     }
 
-   private:
-    Math() = delete;
+    static double ClampAngleToUnitCircle(double angle)
+    {
+        if (abs(angle) >= 2 * M_PI)
+        {
+            angle = fmod(angle, 2 * M_PI);
+        }
+        if (angle < 0)
+        {
+            angle = 2 * M_PI + angle;
+        }
+        return angle;
+    }
 };

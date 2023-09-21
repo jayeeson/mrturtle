@@ -36,9 +36,10 @@ bool SpeedCommand::Validate()
         return false;
     }
 
-    if (_speed >= _turtle.GetDefaultSpeed() * 100)
+    const double maxSpeed = _turtle.GetDefaultSpeed() * 100;
+    if (_speed > maxSpeed)
     {
-        QString str = "Too fast!";
+        QString str = "Too fast! Max speed = " + QString::number( maxSpeed );
         _turtle.GetCanvas().DoAddLineToCommandHistoryPanel(str, "darkred");
         return false;
     }

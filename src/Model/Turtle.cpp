@@ -56,7 +56,7 @@ void Turtle::Backward(double distance) { Forward(distance, true); }
 
 void Turtle::RotateRad(double angle)
 {
-    _heading = ClampAngleToUnitCircle(_heading - angle);
+    _heading = Math::ClampAngleToUnitCircle(_heading - angle);
     emit doRotate(Math::RadToDeg(angle));
     emit HeadingChanged();
 }
@@ -67,24 +67,11 @@ void Turtle::SetHeading(double angle)
 {
     if (!Math::IsEqual(_heading, angle))
     {
-        double newHeading = ClampAngleToUnitCircle(angle);
+        double newHeading = Math::ClampAngleToUnitCircle(angle);
         double diff = newHeading - _heading;
         double quickDiff = diff > M_PI ? diff - (2 * M_PI) : diff;
         _heading = newHeading;
         emit HeadingChanged();
         emit doRotate(Math::RadToDeg(-quickDiff));
     }
-}
-
-double Turtle::ClampAngleToUnitCircle(double angle)
-{
-    if (abs(angle) >= 2 * M_PI)
-    {
-        angle = fmod(angle, 2 * M_PI);
-    }
-    if (angle < 0)
-    {
-        angle = 2 * M_PI + angle;
-    }
-    return angle;
 }

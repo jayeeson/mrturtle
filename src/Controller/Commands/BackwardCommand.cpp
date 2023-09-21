@@ -13,7 +13,7 @@ bool BackwardCommand::Execute()
             const auto pos = _turtle.GetPosition();
             const auto heading = _turtle.GetHeading();
             const auto pathList = _turtle.GetCanvas().GetTurtlePath(
-                pos, _turtle.ClampAngleToUnitCircle(heading + M_PI), _value);
+                pos, Math::ClampAngleToUnitCircle(heading + M_PI), _value);
 
             _turtle.GetCanvas().DoDrawPaths(pathList);
         }

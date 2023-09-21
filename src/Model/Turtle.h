@@ -38,8 +38,6 @@ class Turtle : public QObject
 
     inline CanvasData &GetCanvas();
 
-    static double ClampAngleToUnitCircle(double angle);
-
    signals:
     void PositionChanged();
     void HeadingChanged();
