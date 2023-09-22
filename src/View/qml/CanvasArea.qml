@@ -79,9 +79,11 @@ Canvas {
       timerFps.start()
     }
   }
+
   function onDrawLineComplete()
   {
-    if (i + 1 >= x1List.length )
+    const allLinesDrawn = i + 1 >= x1List.length;
+    if (allLinesDrawn)
     {
       clearLists()
       i = 0;
