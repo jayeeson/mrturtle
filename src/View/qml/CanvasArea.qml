@@ -57,6 +57,7 @@ Canvas {
   }
 
   onPaint: {
+    console.log("painting")
     var ctx = getContext("2d");
     ctx.lineWidth = cppCanvas.cppPenSize;
     ctx.strokeStyle = cppCanvas.cppPenColor
@@ -75,17 +76,9 @@ Canvas {
       prevDrawPointY = currentY
 
       ctx.stroke()
-    }
-    timerFps.start()
-  }
-
-  onPainted: {
-    // stop infinite paint on launch
-    if( x1List.length == 0) {
-      timerFps.stop();
+      timerFps.start()
     }
   }
-
   function onDrawLineComplete()
   {
     if (i + 1 >= x1List.length )
