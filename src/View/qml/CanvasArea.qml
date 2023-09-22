@@ -87,7 +87,6 @@ Canvas {
       clearLists()
       i = 0;
       cppCommand.NotifyRunStopped()
-      timerFps.stop();
     }
     else
     {
