@@ -101,7 +101,13 @@ Canvas {
   Timer {
     id: timerFps
     interval: 16
-    onTriggered: mycanvas.requestPaint()
+    onTriggered: {
+      const minX = Math.min(prevDrawPointX, currentX);
+      const minY = Math.min(prevDrawPointY, currentY);
+      const maxX = Math.max(prevDrawPointX, currentX);
+      const maxY = Math.max(prevDrawPointY, currentY);
+      mycanvas.markDirty(Qt.rect(minX - 1, minY - 1, maxX - minX + 2, maxY - minY + 2))
+    }
     onRunningChanged: {
       positionChanged(currentX, currentY)
       if (Math.abs(prevDrawPointX - x2List[i]) < precision && Math.abs(prevDrawPointY - y2List[i]) < precision) {
