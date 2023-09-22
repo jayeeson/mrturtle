@@ -11,7 +11,7 @@ ListView {
   anchors.left: parent.left
   anchors.leftMargin: 10
   flickableDirection: Flickable.AutoFlickIfNeeded
-  interactive: false
+  interactive: true
   clip: true
 
   ScrollBar.vertical: ScrollBar {

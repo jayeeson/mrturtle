@@ -57,7 +57,6 @@ Canvas {
   }
 
   onPaint: {
-    console.log("painting")
     var ctx = getContext("2d");
     ctx.lineWidth = cppCanvas.cppPenSize;
     ctx.strokeStyle = cppCanvas.cppPenColor
